@@ -1,0 +1,1498 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>中外历史对照图谱 | 时间轴上的中国史与世界史</title>
+<meta name="description" content="以多文明时间轴呈现中外历史对照：检索历史事件与人物，查看同一时期中国与世界的重大事件，覆盖公元前3500年至公元2000年，适用于中学历史学习与课堂教学。">
+<meta name="keywords" content="历史时间轴,中外历史对照,历史图谱,中国史,世界史,历史教学,历史事件查询,历史人物,同步对照,课堂演示">
+<meta name="author" content="中外历史对照图谱">
+<meta name="robots" content="index,follow">
+<link rel="canonical" href="./">
+<!-- Open Graph -->
+<meta property="og:type" content="website">
+<meta property="og:title" content="中外历史对照图谱 | 时间轴上的中国史与世界史">
+<meta property="og:description" content="多文明时间轴检索历史事件与人物，同一时期中国发生了什么、世界发生了什么，一目了然。适用于历史学习与课堂教学。">
+<meta property="og:site_name" content="中外历史对照图谱">
+<meta property="og:locale" content="zh_CN">
+<!-- 移动端 -->
+<meta name="theme-color" content="#f6f4ef">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-title" content="历史对照图谱">
+<link rel="manifest" href="manifest.json">
+<!-- 结构化数据 -->
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "WebApplication",
+  "name": "中外历史对照图谱",
+  "alternateName": "History Timeline Atlas",
+  "description": "以多文明时间轴呈现中外历史对照的交互式图谱：可检索历史事件与人物，查看同一时期中国与世界的重大事件，覆盖公元前3500年至公元2000年。",
+  "applicationCategory": "EducationalApplication",
+  "operatingSystem": "Web",
+  "inLanguage": "zh-CN",
+  "offers": { "@type": "Offer", "price": "0", "priceCurrency": "CNY" },
+  "featureList": [
+    "多文明泳道时间轴",
+    "历史事件与人物检索",
+    "同一时期中外事件对照",
+    "对比视图",
+    "时间排序与判断练习",
+    "课堂演示模式",
+    "讲义导出"
+  ],
+  "audience": { "@type": "EducationalAudience", "educationalRole": ["student", "teacher"] },
+  "about": [
+    { "@type": "Thing", "name": "中国历史" },
+    { "@type": "Thing", "name": "世界历史" }
+  ]
+}
+</script>
+<style>
+  :root {
+    --bg: #f6f4ef;
+    --panel: #ffffff;
+    --border: #e2ddd2;
+    --text: #2b2a26;
+    --text2: #6f6a5e;
+    --accent: #8a6d3b;
+    --accent2: #c0392b;
+  }
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body {
+    font-family: "PingFang SC", "Hiragino Sans GB", "Microsoft YaHei", sans-serif;
+    background: var(--bg);
+    color: var(--text);
+    height: 100vh;
+    display: flex;
+    flex-direction: column;
+    overflow: hidden;
+  }
+  header {
+    display: flex; align-items: center; gap: 16px;
+    padding: 10px 18px;
+    background: var(--panel);
+    border-bottom: 1px solid var(--border);
+    flex-shrink: 0;
+  }
+  header h1 { font-size: 17px; letter-spacing: 2px; }
+  header h1 span { color: var(--accent2); }
+  .search-box { position: relative; flex: 0 0 340px; }
+  .search-box input {
+    width: 100%; padding: 7px 12px; border: 1px solid var(--border);
+    border-radius: 8px; font-size: 13px; background: #fbfaf7; color: var(--text);
+    outline: none;
+  }
+  .search-box input:focus { border-color: var(--accent); }
+  .search-sug {
+    position: absolute; top: 100%; left: 0; right: 0; z-index: 50;
+    background: var(--panel); border: 1px solid var(--border);
+    border-radius: 8px; margin-top: 4px; max-height: 300px; overflow-y: auto;
+    box-shadow: 0 8px 24px rgba(0,0,0,.12); display: none;
+  }
+  .search-sug .sug-item {
+    padding: 8px 12px; cursor: pointer; font-size: 13px;
+    display: flex; justify-content: space-between; align-items: center; gap: 8px;
+  }
+  .search-sug .sug-item:hover, .search-sug .sug-item.active { background: #f3efe6; }
+  .sug-item .tag { font-size: 11px; padding: 1px 7px; border-radius: 9px; color: #fff; flex-shrink: 0; }
+  .tag-event { background: var(--accent); }
+  .tag-person { background: #6a4c93; }
+  .sug-item .meta { color: var(--text2); font-size: 12px; }
+  .eras { display: flex; gap: 6px; flex-wrap: wrap; flex: 1; justify-content: flex-end; }
+  .eras button {
+    border: 1px solid var(--border); background: #fbfaf7; color: var(--text2);
+    padding: 5px 10px; border-radius: 14px; font-size: 12px; cursor: pointer;
+    white-space: nowrap; transition: all .15s;
+  }
+  .eras button:hover { border-color: var(--accent); color: var(--accent); }
+  .eras button.active { background: var(--accent); border-color: var(--accent); color: #fff; }
+
+  .legend {
+    display: flex; gap: 14px; padding: 6px 18px; flex-wrap: wrap;
+    background: var(--panel); border-bottom: 1px solid var(--border); flex-shrink: 0;
+    font-size: 12px;
+  }
+  .legend .lg { display: flex; align-items: center; gap: 5px; cursor: pointer; user-select: none; opacity: 1; }
+  .legend .lg.off { opacity: .35; }
+  .legend .dot { width: 10px; height: 10px; border-radius: 3px; }
+
+  .main { flex: 1; display: flex; min-height: 0; }
+  .chart-area {
+    flex: 1; overflow: hidden; position: relative; cursor: grab;
+  }
+  .chart-area.dragging { cursor: grabbing; }
+  #chart { width: 100%; height: 100%; display: block; }
+
+  .side {
+    width: 400px; flex-shrink: 0; overflow-y: auto;
+    background: var(--panel); border-left: 1px solid var(--border);
+    padding: 18px;
+  }
+  .side .empty { color: var(--text2); font-size: 13px; line-height: 1.9; padding-top: 40px; text-align: center; }
+  .side h2 { font-size: 19px; margin-bottom: 4px; line-height: 1.4; }
+  .side .sub { font-size: 12px; color: var(--text2); margin-bottom: 14px; display: flex; align-items: center; gap: 8px; flex-wrap: wrap; }
+  .side .pill { padding: 2px 10px; border-radius: 10px; color: #fff; font-size: 11px; }
+  .side .detail { font-size: 14px; line-height: 1.85; color: #3d3a33; margin-bottom: 16px; }
+  .side .section-title { font-size: 12px; color: var(--accent); letter-spacing: 2px; margin: 16px 0 8px; font-weight: 600; border-top: 1px dashed var(--border); padding-top: 14px; }
+  .same-list { display: flex; flex-direction: column; gap: 8px; }
+  .same-item {
+    background: #faf7f0; border-left: 3px solid var(--accent);
+    padding: 9px 12px; border-radius: 0 8px 8px 0; font-size: 13px; line-height: 1.7;
+    cursor: pointer; transition: background .15s;
+  }
+  .same-item:hover { background: #f3ede0; }
+  .link-list { display: flex; flex-wrap: wrap; gap: 8px; }
+  .link-chip {
+    border: 1px solid var(--border); border-radius: 14px; padding: 4px 12px;
+    font-size: 12.5px; cursor: pointer; background: #fbfaf7; color: var(--text);
+    transition: all .15s;
+  }
+  .link-chip:hover { border-color: var(--accent2); color: var(--accent2); }
+
+  /* ===== 模式按钮 ===== */
+  .mode-btns { display: flex; gap: 6px; }
+  .mode-btns button {
+    border: 1px solid var(--accent); background: var(--accent); color: #fff;
+    padding: 6px 14px; border-radius: 8px; font-size: 13px; cursor: pointer; white-space: nowrap;
+  }
+  .mode-btns button.ghost { background: transparent; color: var(--accent); }
+  .mode-btns button:hover { filter: brightness(1.08); }
+
+  /* ===== 全屏浮层 ===== */
+  .overlay {
+    position: fixed; inset: 0; z-index: 100; background: rgba(43,42,38,.45);
+    display: none; align-items: center; justify-content: center; padding: 24px;
+  }
+  .overlay.show { display: flex; }
+  .ov-card {
+    background: var(--panel); border-radius: 14px; width: min(1000px, 96vw);
+    max-height: 92vh; overflow-y: auto; padding: 26px 30px;
+    box-shadow: 0 20px 60px rgba(0,0,0,.3);
+  }
+  .ov-head { display: flex; justify-content: space-between; align-items: center; margin-bottom: 18px; }
+  .ov-head h2 { font-size: 18px; letter-spacing: 1px; }
+  .ov-close { border: none; background: #f0ece3; width: 30px; height: 30px; border-radius: 50%; cursor: pointer; font-size: 15px; color: var(--text2); }
+  .ov-close:hover { background: var(--accent2); color: #fff; }
+
+  /* 对比视图 */
+  .cmp-selectors { display: grid; grid-template-columns: 1fr 40px 1fr; gap: 10px; align-items: center; margin-bottom: 16px; }
+  .cmp-selectors select {
+    width: 100%; padding: 8px 10px; border: 1px solid var(--border); border-radius: 8px;
+    font-size: 13px; background: #fbfaf7; color: var(--text); outline: none;
+  }
+  .cmp-vs { text-align: center; font-weight: 700; color: var(--accent2); font-size: 15px; }
+  .cmp-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; }
+  .cmp-col { border: 1px solid var(--border); border-radius: 10px; overflow: hidden; }
+  .cmp-col-head { padding: 10px 14px; color: #fff; font-weight: 600; font-size: 14.5px; }
+  .cmp-col-head .yr { font-weight: 400; font-size: 12px; opacity: .9; margin-left: 8px; }
+  .cmp-col-body { padding: 12px 14px; font-size: 13.5px; line-height: 1.8; }
+  .cmp-col-body .lbl { font-size: 11.5px; color: var(--accent); letter-spacing: 1.5px; margin: 10px 0 4px; font-weight: 600; }
+  .cmp-col-body .lbl:first-child { margin-top: 0; }
+  .cmp-analysis {
+    margin-top: 14px; background: #faf7f0; border-left: 3px solid var(--accent);
+    border-radius: 0 10px 10px 0; padding: 12px 16px; font-size: 13.5px; line-height: 1.9;
+  }
+  .cmp-analysis b { color: var(--accent2); }
+  .cmp-quick { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 12px; }
+  .cmp-quick .qc {
+    font-size: 12px; border: 1px dashed var(--border); border-radius: 12px;
+    padding: 3px 10px; cursor: pointer; color: var(--text2);
+  }
+  .cmp-quick .qc:hover { border-color: var(--accent); color: var(--accent); }
+
+  /* 测验模式 */
+  .quiz-setup { text-align: center; padding: 20px 0; }
+  .quiz-setup p { color: var(--text2); font-size: 13.5px; margin-bottom: 16px; line-height: 1.8; }
+  .quiz-setup .qtypes { display: flex; gap: 12px; justify-content: center; flex-wrap: wrap; margin-bottom: 20px; }
+  .quiz-setup .qtype {
+    border: 1px solid var(--border); border-radius: 12px; padding: 16px 22px; cursor: pointer;
+    width: 200px; text-align: left; transition: all .15s; background: #fbfaf7;
+  }
+  .quiz-setup .qtype:hover { border-color: var(--accent); background: #f3efe6; }
+  .quiz-setup .qtype h3 { font-size: 15px; margin-bottom: 6px; }
+  .quiz-setup .qtype p { font-size: 12px; margin: 0; color: var(--text2); }
+  .quiz-q { font-size: 16.5px; line-height: 1.7; margin-bottom: 18px; }
+  .quiz-q .qnum { color: var(--accent); font-size: 12px; letter-spacing: 2px; display: block; margin-bottom: 6px; }
+  .quiz-opts { display: flex; flex-direction: column; gap: 9px; }
+  .quiz-opt {
+    border: 1px solid var(--border); border-radius: 10px; padding: 11px 16px;
+    cursor: pointer; font-size: 14px; background: #fbfaf7; transition: all .12s;
+    display: flex; align-items: center; gap: 10px; text-align: left;
+  }
+  .quiz-opt:hover { border-color: var(--accent); }
+  .quiz-opt .oi {
+    width: 24px; height: 24px; border-radius: 50%; background: #eee8db; color: var(--text2);
+    display: flex; align-items: center; justify-content: center; font-size: 12px; flex-shrink: 0;
+  }
+  .quiz-opt.correct { border-color: #2e8b57; background: #eef7f0; }
+  .quiz-opt.correct .oi { background: #2e8b57; color: #fff; }
+  .quiz-opt.wrong { border-color: var(--accent2); background: #fbeeea; }
+  .quiz-opt.wrong .oi { background: var(--accent2); color: #fff; }
+  .quiz-opt.disabled { pointer-events: none; opacity: .75; }
+  .quiz-exp {
+    margin-top: 14px; background: #faf7f0; border-left: 3px solid var(--accent);
+    padding: 10px 14px; border-radius: 0 8px 8px 0; font-size: 13px; line-height: 1.8;
+  }
+  .quiz-foot { display: flex; justify-content: space-between; align-items: center; margin-top: 18px; }
+  .quiz-score { font-size: 13px; color: var(--text2); }
+  .quiz-score b { color: var(--accent2); font-size: 16px; }
+  .btn-main {
+    background: var(--accent); color: #fff; border: none; border-radius: 8px;
+    padding: 9px 22px; font-size: 13.5px; cursor: pointer;
+  }
+  .btn-main:hover { filter: brightness(1.08); }
+  .btn-ghost {
+    background: transparent; color: var(--text2); border: 1px solid var(--border);
+    border-radius: 8px; padding: 9px 18px; font-size: 13.5px; cursor: pointer;
+  }
+  .btn-ghost:hover { border-color: var(--accent); color: var(--accent); }
+  .quiz-result { text-align: center; padding: 30px 0; }
+  .quiz-result .big { font-size: 44px; margin-bottom: 8px; }
+  .quiz-result h3 { font-size: 20px; margin-bottom: 8px; }
+  .quiz-result p { color: var(--text2); font-size: 13.5px; line-height: 1.9; }
+  .quiz-wrong-list { text-align: left; margin: 18px auto 0; max-width: 640px; }
+  .quiz-wrong-list .wl {
+    background: #faf7f0; border-radius: 8px; padding: 9px 14px; margin-bottom: 8px;
+    font-size: 13px; line-height: 1.7;
+  }
+
+  /* ===== 概念卡弹层 ===== */
+  .term-pop {
+    position: fixed; z-index: 120; background: var(--panel); border: 1px solid var(--border);
+    border-radius: 10px; box-shadow: 0 12px 36px rgba(0,0,0,.22);
+    padding: 14px 18px; max-width: 360px; font-size: 13.5px; line-height: 1.85; display: none;
+  }
+  .term-pop h4 { font-size: 15px; color: var(--accent); margin-bottom: 6px; }
+  .term-pop h4 small { color: var(--text2); font-weight: 400; font-size: 11.5px; margin-left: 8px; }
+  .term-pop .term-close { position: absolute; top: 8px; right: 10px; border: none; background: none; color: var(--text2); cursor: pointer; font-size: 14px; }
+  .term-link {
+    border-bottom: 1px dashed var(--accent); cursor: help; color: var(--accent);
+  }
+  .term-link:hover { color: var(--accent2); border-bottom-color: var(--accent2); }
+
+  /* ===== 课堂演示模式 ===== */
+  .present-wrap {
+    position: fixed; inset: 0; z-index: 110; background: #1e1c18;
+    display: none; flex-direction: column; color: #f0ebe0;
+  }
+  .present-wrap.show { display: flex; }
+  .p-head {
+    display: flex; justify-content: space-between; align-items: center;
+    padding: 16px 32px; flex-shrink: 0;
+  }
+  .p-head .p-title { font-size: 15px; color: #b5ac98; letter-spacing: 2px; }
+  .p-head .p-count { font-size: 13px; color: #8a8271; }
+  .p-body { flex: 1; display: flex; align-items: center; justify-content: center; padding: 0 8vw; overflow-y: auto; }
+  .p-content { width: 100%; max-width: 1100px; }
+  .p-civ { display: flex; gap: 10px; align-items: center; margin-bottom: 18px; }
+  .p-civ .pill { padding: 4px 14px; border-radius: 12px; color: #fff; font-size: 15px; }
+  .p-civ .yr { font-size: 17px; color: #b5ac98; }
+  .p-name { font-size: clamp(36px, 6vw, 64px); font-weight: 700; line-height: 1.3; margin-bottom: 22px; letter-spacing: 2px; }
+  .p-detail { font-size: clamp(18px, 2.2vw, 25px); line-height: 2.0; color: #d8d2c4; margin-bottom: 30px; }
+  .p-same { border-top: 1px solid rgba(255,255,255,.12); padding-top: 22px; }
+  .p-same .lbl { font-size: 13px; letter-spacing: 3px; color: #b8925a; margin-bottom: 12px; }
+  .p-same .ps { font-size: clamp(15px, 1.7vw, 19px); line-height: 2.0; color: #b5ac98; margin-bottom: 6px; }
+  .p-same .ps b { color: #e8dfc9; }
+  .p-nav {
+    position: fixed; bottom: 0; left: 0; right: 0;
+    display: flex; justify-content: center; gap: 14px; padding: 18px;
+    background: linear-gradient(transparent, rgba(0,0,0,.5));
+  }
+  .p-nav button {
+    background: rgba(255,255,255,.1); border: 1px solid rgba(255,255,255,.18);
+    color: #e8dfc9; border-radius: 10px; padding: 12px 26px; font-size: 15px; cursor: pointer;
+  }
+  .p-nav button:hover { background: rgba(255,255,255,.2); }
+  .p-nav .p-hint { align-self: center; font-size: 12.5px; color: #8a8271; }
+  .p-progress { height: 3px; background: rgba(255,255,255,.08); flex-shrink: 0; }
+  .p-progress .bar { height: 100%; background: var(--accent); transition: width .2s; }
+
+  /* ===== 教师标注 ===== */
+  .anno-section .btn-mini {
+    background: transparent; border: 1px solid var(--border); color: var(--accent);
+    border-radius: 6px; padding: 3px 10px; font-size: 12px; cursor: pointer; margin-right: 6px;
+  }
+  .anno-section .btn-mini:hover { border-color: var(--accent); }
+  .anno-section .btn-mini.danger { color: var(--accent2); }
+  .anno-item {
+    background: #eef3ee; border-left: 3px solid #2e8b57; border-radius: 0 8px 8px 0;
+    padding: 9px 12px; font-size: 13px; line-height: 1.75; margin-bottom: 8px;
+    white-space: pre-wrap;
+  }
+  .anno-item .anno-meta { font-size: 11px; color: #7a9a80; margin-bottom: 3px; }
+  .anno-editor textarea {
+    width: 100%; min-height: 70px; border: 1px solid var(--border); border-radius: 8px;
+    padding: 8px 10px; font-size: 13px; font-family: inherit; resize: vertical;
+    background: #fbfaf7; color: var(--text); outline: none; margin-bottom: 8px;
+  }
+  .anno-editor textarea:focus { border-color: var(--accent); }
+
+  /* ===== 分享反馈 ===== */
+  .share-toast {
+    position: fixed; bottom: 70px; left: 50%; transform: translateX(-50%);
+    background: rgba(43,42,38,.92); color: #fff; padding: 9px 20px; border-radius: 20px;
+    font-size: 13px; z-index: 130; display: none; box-shadow: 0 6px 20px rgba(0,0,0,.3);
+  }
+
+  /* ===== 打印讲义 ===== */
+  .handout {
+    display: none; font-family: "Songti SC", "SimSun", serif; color: #000;
+  }
+  @media print {
+    body > *:not(.handout) { display: none !important; }
+    body { overflow: visible; height: auto; background: #fff; }
+    .handout { display: block !important; padding: 0; }
+    @page { margin: 18mm 16mm; }
+  }
+  .handout h1 { font-size: 22px; text-align: center; letter-spacing: 3px; margin-bottom: 4px; }
+  .handout .ho-sub { text-align: center; font-size: 12px; color: #555; margin-bottom: 18px; }
+  .handout .ho-range { font-size: 13px; text-align: center; margin-bottom: 16px; }
+  .handout table { width: 100%; border-collapse: collapse; font-size: 12px; }
+  .handout th, .handout td { border: 1px solid #999; padding: 6px 8px; vertical-align: top; line-height: 1.6; }
+  .handout th { background: #f0ece3; font-family: "PingFang SC", sans-serif; }
+  .handout td.t { white-space: nowrap; width: 90px; font-weight: 600; }
+  .handout td.c { white-space: nowrap; width: 70px; }
+  .handout .ho-note { margin-top: 14px; font-size: 11px; color: #666; border-top: 1px dashed #aaa; padding-top: 8px; }
+
+
+  .tooltip {
+    position: absolute; pointer-events: none; z-index: 60;
+    background: rgba(43,42,38,.95); color: #fff; padding: 8px 12px;
+    border-radius: 8px; font-size: 12.5px; line-height: 1.5; max-width: 280px;
+    display: none;
+  }
+  .tooltip b { font-size: 13.5px; }
+  .tooltip .t-meta { color: #ccc4b3; font-size: 11.5px; margin-top: 2px; }
+
+  .zoombar {
+    position: absolute; bottom: 16px; left: 50%; transform: translateX(-50%);
+    display: flex; gap: 8px; z-index: 20;
+  }
+  .zoombar button, .navbtns button {
+    background: var(--panel); border: 1px solid var(--border); border-radius: 8px;
+    padding: 6px 14px; font-size: 13px; cursor: pointer; color: var(--text);
+    box-shadow: 0 2px 8px rgba(0,0,0,.08);
+  }
+  .zoombar button:hover, .navbtns button:hover { border-color: var(--accent); color: var(--accent); }
+  .navbtns { position: absolute; bottom: 16px; right: 16px; display: flex; gap: 8px; z-index: 20; }
+  .hint {
+    position: absolute; top: 10px; left: 12px; font-size: 11.5px; color: #9a9484; z-index: 5;
+    background: rgba(255,255,255,.7); padding: 3px 8px; border-radius: 6px;
+  }
+</style>
+</head>
+<body>
+<header>
+  <h1><span>中外历史</span>对照图谱</h1>
+  <div class="search-box">
+    <input id="searchInput" type="text" placeholder="搜索事件或人物，如：孔子、汉武帝、丝绸之路" autocomplete="off">
+    <div class="search-sug" id="searchSug"></div>
+  </div>
+  <div class="mode-btns">
+    <button class="ghost" onclick="openCompare()">对比</button>
+    <button class="ghost" onclick="openQuiz()">测验</button>
+    <button onclick="openPresent()">演示</button>
+  </div>
+  <div class="eras" id="eras"></div>
+</header>
+
+<div class="legend" id="legend"></div>
+
+<div class="overlay" id="cmpOverlay">
+  <div class="ov-card">
+    <div class="ov-head">
+      <h2>对比视图 —— 同一时期，两种命运</h2>
+      <button class="ov-close" onclick="closeOverlay('cmpOverlay')">✕</button>
+    </div>
+    <div class="cmp-selectors">
+      <select id="cmpA"></select>
+      <div class="cmp-vs">VS</div>
+      <select id="cmpB"></select>
+    </div>
+    <div id="cmpBody"></div>
+    <div class="cmp-quick" id="cmpQuick"></div>
+  </div>
+</div>
+
+<div class="overlay" id="quizOverlay">
+  <div class="ov-card" id="quizCard"></div>
+</div>
+
+<div class="term-pop" id="termPop"></div>
+<div class="share-toast" id="shareToast"></div>
+<div class="handout" id="handout"></div>
+
+<div class="present-wrap" id="presentWrap">
+  <div class="p-head">
+    <span class="p-title">中外历史对照图谱 · 课堂演示</span>
+    <span class="p-count" id="pCount"></span>
+  </div>
+  <div class="p-progress"><div class="bar" id="pBar" style="width:0%"></div></div>
+  <div class="p-body"><div class="p-content" id="pContent"></div></div>
+  <div class="p-nav">
+    <button onclick="presentPrev()">← 上一条</button>
+    <span class="p-hint">键盘 ← → 翻页 · Esc 退出</span>
+    <button onclick="presentNext()">下一条 →</button>
+    <button onclick="closePresent()">退出</button>
+  </div>
+</div>
+
+<div class="main" role="main">
+  <div class="chart-area" id="chartArea">
+    <canvas id="chart"></canvas>
+    <div class="hint">拖动平移 · 滚轮缩放 · 点击条目查看同期世界</div>
+    <div class="tooltip" id="tooltip"></div>
+    <div class="zoombar">
+      <button onclick="zoomTo(-3500, 500)">上古全景</button>
+      <button onclick="zoomTo(1500, 2000)">近现代</button>
+      <button onclick="zoomTo(-500, 500)">千年视野</button>
+      <button onclick="zoomBy(1.4)">+</button>
+      <button onclick="zoomBy(1/1.4)">−</button>
+    </div>
+    <div class="navbtns">
+      <button onclick="copyShareLink()" title="复制当前视图与选中条目的链接">分享</button>
+      <button onclick="exportHandout()" title="将当前视野导出为一页纸讲义（打印/PDF）">讲义</button>
+      <button onclick="resetView()">复位</button>
+    </div>
+  </div>
+  <div class="side" id="sidePanel">
+    <div class="empty">
+      点击时间轴上的任意条目<br><br>
+      右侧将显示该条目的详细内容，以及同一时期世界其他文明的动向。
+    </div>
+  </div>
+</div>
+
+<!-- 无 JavaScript 时的可索引内容（搜索引擎与降级访问） -->
+<noscript>
+  <section style="max-width:860px;margin:0 auto;padding:24px;font-size:14px;line-height:1.9">
+    <h2>中外历史对照图谱</h2>
+    <p>本工具以多文明时间轴呈现中外历史对照，需要启用 JavaScript 后使用。以下为主要内容概览：</p>
+    <p>图谱覆盖公元前3500年至公元2000年，按中国、西亚·北非、欧洲、南亚、草原·内亚、美洲、东亚其他、撒哈拉以南非洲八大文明区组织，收录一百余个关键历史事件与人物。核心功能包括：按时间轴浏览各文明兴衰；检索任意事件或人物并查看详情；查看同一时期中国与世界其他文明的动向；对比任意两个事件或人物；通过时间排序、同时代判断与选择题检验学习效果；教师可添加批注、导出讲义、分享视图链接。</p>
+    <h3>收录内容举例</h3>
+    <ul>
+      <li>中国：商朝、春秋、秦汉、盛唐、两宋、明清、近代变革至改革开放</li>
+      <li>西亚·北非：苏美尔、古埃及、波斯帝国、阿拉伯黄金时代、奥斯曼帝国</li>
+      <li>欧洲：希腊城邦、罗马共和国与帝国、文艺复兴、宗教改革、工业革命</li>
+      <li>其他地区：印度孔雀王朝、玛雅文明、马里帝国、蒙古帝国、美国独立</li>
+    </ul>
+  </section>
+</noscript>
+
+<script src="data.js"></script>
+<script>
+/* ============ 视口状态 ============ */
+let viewStart = -3500, viewEnd = 2200;
+const MIN_SPAN = 40; // 最小显示年跨度
+const canvas = document.getElementById('chart');
+const ctx = canvas.getContext('2d');
+const chartArea = document.getElementById('chartArea');
+const tooltip = document.getElementById('tooltip');
+
+let W = 0, H = 0, dpr = 1;
+let laneOffsets = []; // 每条泳道当前 Y 偏移
+
+/* ============ 布局：绘制时按当前视口动态分行（贪心，避免重叠） ============ */
+let LAYOUT = {};
+function buildLayout() {
+  LAYOUT = {};
+  CIVILIZATIONS.forEach(c => {
+    LAYOUT[c.id] = { items: ITEMS.filter(i => i.factions.includes(c.id)).sort((a,b)=>a.start-b.start) };
+  });
+}
+
+/* ============ 坐标转换 ============ */
+function xOf(year) { return (year - viewStart) / (viewEnd - viewStart) * (W - 30) + 15; }
+function yearOf(x) { return viewStart + (x - 15) / (W - 30) * (viewEnd - viewStart); }
+
+/* ============ 绘制 ============ */
+function draw() {
+  dpr = window.devicePixelRatio || 1;
+  W = chartArea.clientWidth; H = chartArea.clientHeight;
+  canvas.width = W * dpr; canvas.height = H * dpr;
+  canvas.style.width = W + 'px'; canvas.style.height = H + 'px';
+  ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
+
+  ctx.fillStyle = '#f6f4ef';
+  ctx.fillRect(0, 0, W, H);
+
+  const lanes = CIVILIZATIONS.filter(c => !c._hidden);
+  const laneH = H / lanes.length;
+  const rowH = Math.max(14, Math.min(22, laneH / 4));
+
+  // 泳道背景交替
+  lanes.forEach((c, li) => {
+    if (li % 2 === 0) {
+      ctx.fillStyle = 'rgba(0,0,0,0.018)';
+      ctx.fillRect(0, li*laneH, W, laneH);
+    }
+  });
+
+  // 时间刻度
+  const niceStep = niceStepFor(viewEnd - viewStart);
+  ctx.textAlign = 'center';
+  ctx.textBaseline = 'top';
+  for (let y = Math.ceil(viewStart / niceStep) * niceStep; y <= viewEnd; y += niceStep) {
+    const x = xOf(y);
+    ctx.strokeStyle = 'rgba(0,0,0,0.05)';
+    ctx.beginPath(); ctx.moveTo(x, 0); ctx.lineTo(x, H); ctx.stroke();
+    ctx.fillStyle = '#9a9484';
+    ctx.font = '11px sans-serif';
+    ctx.fillText(formatYear(y), x, 4);
+  }
+  // 公元分界线
+  if (viewStart < 0 && viewEnd > 0) {
+    const x = xOf(0);
+    ctx.strokeStyle = 'rgba(192,57,43,.35)';
+    ctx.setLineDash([5,4]);
+    ctx.beginPath(); ctx.moveTo(x, 0); ctx.lineTo(x, H); ctx.stroke();
+    ctx.setLineDash([]);
+  }
+
+  // 条目
+  const hovered = new Set();
+  lanes.forEach((c, li) => {
+    const lay = LAYOUT[c.id];
+    if (!lay) return;
+    const laneTop = li * laneH;
+    const innerTop = laneTop + 18;
+
+    // 泳道标题
+    ctx.textAlign = 'left';
+    ctx.textBaseline = 'top';
+    ctx.fillStyle = c.color;
+    ctx.font = 'bold 12.5px sans-serif';
+    ctx.fillText(c.name, 8, laneTop + 3);
+    ctx.fillStyle = '#b5ae9e';
+    ctx.font = '10.5px sans-serif';
+    ctx.fillText(c.desc.length > 14 ? c.desc.slice(0,14)+'…' : c.desc, 8, laneTop + 19);
+
+    // 动态分行：贪心放置，行数随视口自适应
+    const maxRows = Math.max(2, Math.floor((laneH - 26) / 14));
+    const rowEnds = new Array(maxRows).fill(-Infinity);
+    const minDuration = (viewEnd - viewStart) * 0.004;
+    const rowOf = new Map();
+    lay.items.forEach(it => {
+      const s = it.start, e = Math.max(it.end, it.start + minDuration);
+      let r = 0;
+      while (r < maxRows && !(s > rowEnds[r])) r++;
+      if (r < maxRows) { rowEnds[r] = e; rowOf.set(it, r); }
+    });
+
+    const usableH = laneH - 24;
+    const rowsUsed = rowOf.size ? Math.max(...rowOf.values()) + 1 : 1;
+    const bandH = usableH / rowsUsed;
+    const rowH = Math.max(14, Math.min(22, bandH));
+
+    lay.items.forEach(it => {
+      if (!rowOf.has(it)) return;
+      const x1 = xOf(it.start), x2 = xOf(Math.max(it.end, it.start + minDuration));
+      const row = rowOf.get(it);
+      const bandTop = innerTop + row * bandH;
+      const barH = Math.min(rowH, bandH - 3);
+      if (barH < 4) return;
+      const y = bandTop + (bandH - barH) / 2;
+      if (x2 < -40 || x1 > W + 40) return;
+
+      const isHover = hoverItem === it;
+      const isDim = focusItem && focusItem !== it && !isRelated(it, focusItem);
+      ctx.globalAlpha = isDim ? 0.18 : (isHover ? 1 : 0.92);
+      const col = c.color;
+      roundRect(x1, y, Math.max(x2 - x1, 5), barH, Math.min(4, barH/2));
+      ctx.fillStyle = isHover ? col : col + (it.type==='person' ? 'cc' : '');
+      ctx.fill();
+      if (isHover || (focusItem && isRelated(it, focusItem))) {
+        ctx.strokeStyle = col; ctx.lineWidth = 1.5; ctx.stroke();
+      }
+      ctx.globalAlpha = 1;
+
+      it._hit = { x1, y, x2, y2: y + barH, item: it };
+
+      // 标签（仅在空间足够时）
+      if ((x2 - x1) > 56 && barH >= 9) {
+        ctx.textAlign = 'left';
+        ctx.textBaseline = 'middle';
+        ctx.fillStyle = isHover ? col : shade(col, -0.12);
+        ctx.font = (it.type === 'person' ? 'italic ' : '') + '11px sans-serif';
+        const maxChars = Math.floor((x2 - x1 - 10) / 11.5);
+        const label = it.name.length <= maxChars ? it.name : it.name.slice(0, Math.max(maxChars - 1, 1)) + '…';
+        ctx.fillText(label, x1 + 6, y + barH / 2);
+      }
+    });
+  });
+
+  // 当前聚焦条目到其他泳道的关系连线
+  if (focusItem) {
+    ctx.setLineDash([3,3]);
+    focusItem.links.forEach(nm => {
+      const target = ITEM_INDEX[nm];
+      if (!target || !target._hit) return;
+      const a = focusItem._hit, b = target._hit;
+      if (!a || !b) return;
+      const x1 = (a.x1+a.x2)/2, y1 = a.y + (a.y2-a.y)/2;
+      const x2 = (b.x1+b.x2)/2, y2 = b.y + (b.y2-b.y)/2;
+      const mx = (x1+x2)/2;
+      ctx.strokeStyle = 'rgba(138,109,59,.5)'; ctx.lineWidth = 1.2;
+      ctx.beginPath(); ctx.moveTo(x1,y1);
+      ctx.bezierCurveTo(mx, y1, mx, y2, x2, y2);
+      ctx.stroke();
+    });
+    ctx.setLineDash([]);
+  }
+}
+
+function isRelated(it, focus) {
+  return focus.links.includes(it.name) || it.links.includes(focus.name) ||
+         (it.same_period && it.same_period.some(s => s.includes(focus.name)));
+}
+
+function roundRect(x, y, w, h, r) {
+  ctx.beginPath();
+  ctx.moveTo(x+r, y);
+  ctx.arcTo(x+w, y, x+w, y+h, r);
+  ctx.arcTo(x+w, y+h, x, y+h, r);
+  ctx.arcTo(x, y+h, x, y, r);
+  ctx.arcTo(x, y, x+w, y, r);
+  ctx.closePath();
+}
+
+function niceStepFor(span) {
+  const steps = [10, 25, 50, 100, 250, 500, 1000, 2000, 5000];
+  const target = span / 10;
+  for (const s of steps) if (s >= target) return s;
+  return 10000;
+}
+function formatYear(y) {
+  if (y < 0) return '前' + (-y);
+  if (y === 0) return '公元';
+  return String(y);
+}
+function shade(hex, amt) {
+  const n = parseInt(hex.slice(1), 16);
+  const r = Math.max(0, Math.min(255, (n>>16) + amt*40));
+  const g = Math.max(0, Math.min(255, ((n>>8)&255) + amt*40));
+  const b = Math.max(0, Math.min(255, (n&255) + amt*40));
+  return `rgb(${r},${g},${b})`;
+}
+
+/* ============ 交互：hover / click / drag / zoom ============ */
+let hoverItem = null, focusItem = null;
+let dragging = false, dragStartX = 0, dragStartView = [0,0], moved = false;
+
+function itemAt(mx, my) {
+  const lanes = CIVILIZATIONS.filter(c => !c._hidden);
+  const laneH = H / lanes.length;
+  let li = Math.floor(my / laneH);
+  if (li < 0 || li >= lanes.length) return null;
+  const c = lanes[li];
+  const lay = LAYOUT[c.id];
+  if (!lay) return null;
+  // 直接扫描该泳道条目命中区域
+  for (const it of lay.items) {
+    if (!it._hit) continue;
+    const h = it._hit;
+    if (mx >= h.x1 - 2 && mx <= h.x2 + 2 && my >= h.y - 2 && my <= h.y2 + 2) return it;
+  }
+  return null;
+}
+
+canvas.addEventListener('mousemove', e => {
+  const rect = canvas.getBoundingClientRect();
+  const mx = e.clientX - rect.left, my = e.clientY - rect.top;
+  if (dragging) {
+    const dx = mx - dragStartX;
+    if (Math.abs(dx) > 3) moved = true;
+    const span = dragStartView[1] - dragStartView[0];
+    const dYears = -dx / (W - 30) * span;
+    viewStart = dragStartView[0] + dYears;
+    viewEnd = dragStartView[1] + dYears;
+    clampView();
+    draw();
+    return;
+  }
+  const it = itemAt(mx, my);
+  if (it !== hoverItem) { hoverItem = it; draw(); }
+  if (it) {
+    tooltip.style.display = 'block';
+    tooltip.innerHTML = `<b>${it.name}</b><div class="t-meta">${typeLabel(it)} · ${yearRangeStr(it)} · ${it.factions.map(f=>CIVILIZATIONS.find(c=>c.id===f).name).join('、')}</div>点击查看同期世界 →`;
+    tooltip.style.left = Math.min(mx + 14, W - 290) + 'px';
+    tooltip.style.top = (my + 14) + 'px';
+    canvas.style.cursor = 'pointer';
+  } else {
+    tooltip.style.display = 'none';
+    canvas.style.cursor = dragging ? 'grabbing' : 'grab';
+  }
+});
+canvas.addEventListener('mousedown', e => {
+  dragging = true; moved = false;
+  dragStartX = e.clientX - canvas.getBoundingClientRect().left;
+  dragStartView = [viewStart, viewEnd];
+  chartArea.classList.add('dragging');
+});
+window.addEventListener('mouseup', e => {
+  if (dragging && !moved) {
+    const rect = canvas.getBoundingClientRect();
+    const mx = e.clientX - rect.left, my = e.clientY - rect.top;
+    if (mx >= 0 && mx <= W && my >= 0 && my <= H) {
+      const it = itemAt(mx, my);
+      if (it) selectItem(it);
+      else clearFocus();
+    }
+  }
+  dragging = false;
+  chartArea.classList.remove('dragging');
+});
+canvas.addEventListener('wheel', e => {
+  e.preventDefault();
+  const rect = canvas.getBoundingClientRect();
+  const mx = e.clientX - rect.left;
+  const anchor = yearOf(mx);
+  const factor = e.deltaY > 0 ? 1.15 : 1/1.15;
+  const span = Math.min(Math.max((viewEnd - viewStart) * factor, MIN_SPAN), 8000);
+  const ratio = (mx - 15) / (W - 30);
+  viewStart = anchor - ratio * span;
+  viewEnd = viewStart + span;
+  clampView();
+  draw();
+}, { passive: false });
+
+/* ---- 触摸手势：单指平移 / 双指捏合缩放 ---- */
+let touchState = null; // { mode, startX, startView:[s,e], startDist, startMidX }
+canvas.addEventListener('touchstart', e => {
+  if (e.touches.length === 1) {
+    touchState = { mode: 'pan', startX: e.touches[0].clientX - canvas.getBoundingClientRect().left, startView: [viewStart, viewEnd], moved: false };
+  } else if (e.touches.length === 2) {
+    const r = canvas.getBoundingClientRect();
+    const dx = e.touches[0].clientX - e.touches[1].clientX;
+    const dy = e.touches[0].clientY - e.touches[1].clientY;
+    touchState = {
+      mode: 'pinch',
+      startDist: Math.hypot(dx, dy),
+      startSpan: viewEnd - viewStart,
+      startMidX: (e.touches[0].clientX + e.touches[1].clientX) / 2 - r.left,
+      startView: [viewStart, viewEnd],
+    };
+  }
+}, { passive: true });
+canvas.addEventListener('touchmove', e => {
+  if (!touchState) return;
+  e.preventDefault();
+  const r = canvas.getBoundingClientRect();
+  if (touchState.mode === 'pan' && e.touches.length === 1) {
+    const mx = e.touches[0].clientX - r.left;
+    const dx = mx - touchState.startX;
+    if (Math.abs(dx) > 4) touchState.moved = true;
+    const span = touchState.startView[1] - touchState.startView[0];
+    const dYears = -dx / (W - 30) * span;
+    viewStart = touchState.startView[0] + dYears;
+    viewEnd = touchState.startView[1] + dYears;
+    clampView(); draw();
+  } else if (touchState.mode === 'pinch' && e.touches.length === 2) {
+    const dx = e.touches[0].clientX - e.touches[1].clientX;
+    const dy = e.touches[0].clientY - e.touches[1].clientY;
+    const dist = Math.hypot(dx, dy);
+    const scale = dist / (touchState.startDist || 1);
+    const newSpan = Math.min(Math.max(touchState.startSpan / scale, MIN_SPAN), 8000);
+    // 以双指中点为锚
+    const anchorMidView = yearOf(touchState.startMidX);
+    const ratio = (touchState.startMidX - 15) / (W - 30);
+    viewStart = anchorMidView - ratio * newSpan;
+    viewEnd = viewStart + newSpan;
+    clampView(); draw();
+  }
+}, { passive: false });
+canvas.addEventListener('touchend', e => {
+  if (touchState && touchState.mode === 'pan' && !touchState.moved && e.touches.length === 0) {
+    // 视为点按：选中条目
+    const r = canvas.getBoundingClientRect();
+    const t = e.changedTouches[0];
+    const mx = t.clientX - r.left, my = t.clientY - r.top;
+    const it = itemAt(mx, my);
+    if (it) selectItem(it); else clearFocus();
+  }
+  touchState = null;
+}, { passive: true });
+
+function clampView() {
+  const span = viewEnd - viewStart;
+  if (span > 8000) { viewStart = -3500; viewEnd = 2200; }
+  if (viewStart < -3600) { viewStart = -3600; viewEnd = viewStart + span; }
+  if (viewEnd > 2400) { viewEnd = 2400; viewStart = viewEnd - span; }
+}
+
+function zoomTo(a, b) {
+  viewStart = a; viewEnd = b; clampView(); draw();
+}
+function zoomBy(f) {
+  const mid = (viewStart + viewEnd) / 2, span = Math.min(Math.max((viewEnd-viewStart)*f, MIN_SPAN), 8000);
+  viewStart = mid - span/2; viewEnd = mid + span/2; clampView(); draw();
+}
+function resetView() { zoomTo(-3500, 2200); }
+
+/* ============ 侧栏 ============ */
+const sidePanel = document.getElementById('sidePanel');
+function selectItem(it) {
+  focusItem = it;
+  draw();
+  const civs = it.factions.map(f => {
+    const c = CIVILIZATIONS.find(c=>c.id===f);
+    return `<span class="pill" style="background:${c.color}">${c.name}</span>`;
+  }).join('');
+  const sameHtml = it.same_period.map(s =>
+    `<div class="same-item" onclick="jumpFromSame(this)">${s}</div>`).join('') || '<div style="color:#999;font-size:13px">（暂无标注）</div>';
+  const linksHtml = it.links.map(nm => {
+    const t = ITEM_INDEX[nm]; if (!t) return '';
+    const c = CIVILIZATIONS.find(c=>c.id===t.factions[0]);
+    return `<span class="link-chip" data-name="${nm}" style="border-color:${c.color};color:${c.color}" onclick="selectByName('${nm.replace(/'/g,"\\'")}')">${nm}</span>`;
+  }).join('') || '<span style="color:#999;font-size:13px">（暂无）</span>';
+
+  // 同期其他文明的条目（自动计算）
+  const auto = computeAutoSame(it);
+
+  sidePanel.innerHTML = `
+    <h2>${it.type === 'person' ? '人物 · ' : ''}${it.name}</h2>
+    <div class="sub">${civs}<span>·</span><span>${yearRangeStr(it)}</span><span>·</span><span>${typeLabel(it)}</span></div>
+    <div class="detail">${it.detail}</div>
+    ${it.links.length ? `<div class="section-title">关联条目（点击跳转）</div><div class="link-list">${linksHtml}</div>` : ''}
+    <div class="section-title">同一时期 · 世界其他文明在发生什么</div>
+    <div class="same-list">${sameHtml}</div>
+    ${auto.length ? `<div class="section-title">同期条目（自动对照）</div><div class="link-list">${auto.map(a =>
+      `<span class="link-chip" onclick="selectByName('${a.name.replace(/'/g,"\\'")}')">${a.name}</span>`).join('')}</div>` : ''}
+    ${renderAnnoSection(it)}
+  `;
+  refreshHash();
+}
+function computeAutoSame(it) {
+  const out = [];
+  const others = new Set(it.factions);
+  ITEMS.forEach(o => {
+    if (o === it) return;
+    if (o.factions.every(f => others.has(f))) return; // 排除同文明的（手工对照已覆盖）
+    // 时间重叠
+    if (o.start <= it.end && o.end >= it.start) out.push(o);
+  });
+  return out.sort((a,b)=>b.start-a.start).slice(0, 24);
+}
+function clearFocus() {
+  focusItem = null;
+  sidePanel.innerHTML = '<div class="empty">点击时间轴上的条目，可查看详情与同期世界对照。</div>';
+  draw();
+}
+function selectByName(name) {
+  const it = ITEM_INDEX[name];
+  if (it) selectItem(it);
+}
+function jumpFromSame(el) { /* 同期文字描述暂不做跳转，可扩展 */ }
+function typeLabel(it) { return it.type === 'person' ? '人物' : '事件'; }
+function yearRangeStr(it) {
+  if (it.start === it.end) return fmtY(it.start);
+  return fmtY(it.start) + ' — ' + fmtY(it.end);
+}
+function fmtY(y) { return y < 0 ? `公元前${-y}年` : `公元${y}年`; }
+
+/* ============ 图例开关 ============ */
+const legendEl = document.getElementById('legend');
+CIVILIZATIONS.forEach(c => {
+  const div = document.createElement('div');
+  div.className = 'lg';
+  div.innerHTML = `<span class="dot" style="background:${c.color}"></span>${c.name}`;
+  div.onclick = () => {
+    c._hidden = !c._hidden;
+    div.classList.toggle('off', c._hidden);
+    buildLayout(); draw();
+  };
+  legendEl.appendChild(div);
+});
+
+/* ============ 时代快捷按钮 ============ */
+const erasEl = document.getElementById('eras');
+ERAS.forEach(e => {
+  const b = document.createElement('button');
+  b.textContent = e.name;
+  b.title = e.desc;
+  b.onclick = () => {
+    document.querySelectorAll('.eras button').forEach(x=>x.classList.remove('active'));
+    b.classList.add('active');
+    zoomTo(e.range[0], e.range[1]);
+  };
+  erasEl.appendChild(b);
+});
+
+/* ============ 搜索 ============ */
+const searchInput = document.getElementById('searchInput');
+const searchSug = document.getElementById('searchSug');
+let sugItems = [], sugActive = -1;
+
+searchInput.addEventListener('input', () => {
+  const q = searchInput.value.trim().toLowerCase();
+  if (!q) { searchSug.style.display = 'none'; return; }
+  sugItems = ITEMS.filter(it =>
+    it.name.toLowerCase().includes(q) ||
+    (it.detail && it.detail.toLowerCase().includes(q)) ||
+    (it.factions.some(f => CIVILIZATIONS.find(c=>c.id===f).name.includes(q)))
+  ).slice(0, 12);
+  sugActive = -1;
+  if (sugItems.length) {
+    searchSug.innerHTML = sugItems.map((it, i) => {
+      const c = CIVILIZATIONS.find(c=>c.id===it.factions[0]);
+      return `<div class="sug-item" data-i="${i}">
+        <span class="tag ${it.type==='person'?'tag-person':'tag-event'}">${it.type==='person'?'人物':'事件'}</span>
+        <span style="flex:1">${it.name}</span>
+        <span class="meta">${c.name} · ${fmtY(it.start)}</span>
+      </div>`;
+    }).join('');
+    searchSug.style.display = 'block';
+    searchSug.querySelectorAll('.sug-item').forEach(el => {
+      el.onclick = () => { pickSug(sugItems[el.dataset.i]); };
+    });
+  } else {
+    searchSug.innerHTML = '<div class="sug-item" style="color:#999">未找到匹配的条目</div>';
+    searchSug.style.display = 'block';
+  }
+});
+function pickSug(it) {
+  searchInput.value = it.name;
+  searchSug.style.display = 'none';
+  // 跳转到该条目所在位置
+  const pad = Math.max((it.end - it.start) * 1.5, 120);
+  zoomTo(it.start - pad*0.3, it.end + pad*0.7);
+  selectItem(it);
+  // 隐藏图例中隐藏的对应文明？保持现状即可
+}
+searchInput.addEventListener('keydown', e => {
+  const els = searchSug.querySelectorAll('.sug-item');
+  if (e.key === 'ArrowDown') { e.preventDefault(); sugActive = Math.min(sugActive+1, sugItems.length-1); markSug(); }
+  else if (e.key === 'ArrowUp') { e.preventDefault(); sugActive = Math.max(sugActive-1, 0); markSug(); }
+  else if (e.key === 'Enter') {
+    if (sugActive >= 0 && sugItems[sugActive]) pickSug(sugItems[sugActive]);
+    else if (sugItems.length) pickSug(sugItems[0]);
+  }
+  else if (e.key === 'Escape') searchSug.style.display = 'none';
+});
+function markSug() {
+  searchSug.querySelectorAll('.sug-item').forEach((el,i)=>el.classList.toggle('active', i===sugActive));
+}
+document.addEventListener('click', e => {
+  if (!e.target.closest('.search-box')) searchSug.style.display = 'none';
+});
+
+/* ============ 对比视图 ============ */
+function openCompare() {
+  const ov = document.getElementById('cmpOverlay');
+  ov.classList.add('show');
+  const selA = document.getElementById('cmpA'), selB = document.getElementById('cmpB');
+  const sorted = [...ITEMS].sort((a,b)=>a.name.localeCompare(b.name,'zh'));
+  const opts = sorted.map(it => `<option value="${it.name}">${it.name}（${fmtY(it.start)}）</option>`).join('');
+  if (!selA.options.length) {
+    selA.innerHTML = opts; selB.innerHTML = opts;
+    selA.onchange = renderCompare; selB.onchange = renderCompare;
+  }
+  renderCompare();
+}
+function closeOverlay(id) { document.getElementById(id).classList.remove('show'); }
+document.querySelectorAll('.overlay').forEach(ov => {
+  ov.addEventListener('click', e => { if (e.target === ov) ov.classList.remove('show'); });
+});
+
+function renderCompare() {
+  const a = ITEM_INDEX[document.getElementById('cmpA').value];
+  const b = ITEM_INDEX[document.getElementById('cmpB').value];
+  const body = document.getElementById('cmpBody');
+  if (!a || !b) return;
+
+  // 常用对比组合
+  const pairs = [
+    ["秦始皇统一中国", "布匿战争"], ["汉武帝", "罗马从共和国到帝国"],
+    ["唐朝贞观之治", "伊斯兰教兴起与阿拉伯扩张"], ["孔子", "释迦牟尼"],
+    ["郑和下西洋", "哥伦布发现新大陆"], ["工业革命", "康乾盛世"],
+    ["甲午战争", "明治维新"], ["改革开放", "信息技术革命"],
+  ];
+  const quickHtml = pairs.map(p =>
+    `<span class="qc" data-p='${JSON.stringify(p)}'>${p[0].slice(0,6)}… × ${p[1].slice(0,6)}…</span>`
+  ).join('');
+  document.getElementById('cmpQuick').innerHTML = '快速组合：' + quickHtml;
+  document.querySelectorAll('#cmpQuick .qc').forEach(el => {
+    el.onclick = () => {
+      const p = JSON.parse(el.dataset.p);
+      document.getElementById('cmpA').value = p[0];
+      document.getElementById('cmpB').value = p[1];
+      renderCompare();
+    };
+  });
+
+  // 时间关系分析
+  const aMid = (a.start + a.end) / 2, bMid = (b.start + b.end) / 2;
+  const overlap = a.start <= b.end && b.start <= a.end;
+  const gap = overlap ? 0 : Math.round(Math.abs(aMid - bMid));
+  let timeRel;
+  if (overlap) {
+    const ovS = Math.max(a.start, b.start), ovE = Math.min(a.end, b.end);
+    timeRel = `<b>同期并存</b>——两者在 ${fmtY(ovS)} 至 ${fmtY(ovE)} 时间上重叠。它们属于同一个时代横截面，可以直接对照理解。`;
+  } else if (aMid < bMid) {
+    timeRel = `<b>先后相承</b>——A 发生在 B 之前约 <b>${gap} 年</b>。前者的结果是后者的背景之一。`;
+  } else {
+    timeRel = `<b>先后相承</b>——B 发生在 A 之前约 <b>${gap} 年</b>。前者的结果是后者的背景之一。`;
+  }
+
+  // 共同关联的同期事件（两个条目各自 same_period 中提到同一文明/事件）
+  const aCivs = new Set(a.factions), bCivs = new Set(b.factions);
+  const sharedCiv = [...aCivs].filter(x => bCivs.has(x)).map(x => CIVILIZATIONS.find(c=>c.id===x).name);
+  const bothSameEra = ERAS.filter(e => e.range[0] <= Math.max(a.start,b.start) && e.range[1] >= Math.min(a.end,b.end)).map(e => e.name);
+
+  const colHtml = (it) => {
+    const c = CIVILIZATIONS.find(c=>c.id===it.factions[0]);
+    return `
+      <div class="cmp-col">
+        <div class="cmp-col-head" style="background:${c.color}">${it.name}<span class="yr">${yearRangeStr(it)}</span></div>
+        <div class="cmp-col-body">
+          <div class="lbl">是什么</div>
+          ${it.detail}
+          <div class="lbl">当时的其他文明</div>
+          ${it.same_period.map(s=>`· ${s}`).join('<br>') || '·（暂无标注）'}
+        </div>
+      </div>`;
+  };
+
+  body.innerHTML = `
+    <div class="cmp-grid">${colHtml(a)}${colHtml(b)}</div>
+    <div class="cmp-analysis">
+      <b>时间关系：</b>${timeRel}<br>
+      ${sharedCiv.length ? `<b>共同文明圈：</b>${sharedCiv.join('、')}<br>` : ''}
+      ${bothSameEra.length ? `<b>所属时代：</b>${bothSameEra.join(' / ')}` : ''}
+    </div>
+  `;
+}
+
+/* ============ 测验模式 ============ */
+let quiz = null;
+function openQuiz() {
+  document.getElementById('quizOverlay').classList.add('show');
+  renderQuizSetup();
+}
+function renderQuizSetup() {
+  document.getElementById('quizCard').innerHTML = `
+    <div class="ov-head">
+      <h2>历史时间测验</h2>
+      <button class="ov-close" onclick="closeOverlay('quizOverlay')">✕</button>
+    </div>
+    <div class="quiz-setup">
+      <p>三种题型，用于检验对历史时间脉络的掌握程度。每道题的答案都可以在时间轴上找到出处，答错不扣分，可作为巩固练习。</p>
+      <div class="qtypes">
+        <div class="qtype" onclick="startQuiz('sort')">
+          <h3>时间排序</h3>
+          <p>四件事件，按发生时间先后排序</p>
+        </div>
+        <div class="qtype" onclick="startQuiz('coexist')">
+          <h3>同时代判断</h3>
+          <p>判断两个人物是否属于同一时代</p>
+        </div>
+        <div class="qtype" onclick="startQuiz('choice')">
+          <h3>选择题</h3>
+          <p>根据时期与文明判断对应事件</p>
+        </div>
+      </div>
+    </div>`;
+}
+function shuffle(arr) { const a = [...arr]; for (let i=a.length-1;i>0;i--){const j=Math.floor(Math.random()*(i+1));[a[i],a[j]]=[a[j],a[i]];} return a; }
+function pickItems(n, filter) {
+  const pool = ITEMS.filter(filter || (()=>true));
+  return shuffle(pool).slice(0, n);
+}
+
+function startQuiz(type) {
+  const questions = [];
+  for (let i = 0; i < 5; i++) {
+    if (type === 'sort') {
+      const its = pickItems(4, it => it.type === 'event');
+      if (its.length < 4) continue;
+      const sorted = [...its].sort((a,b)=>a.start-b.start);
+      questions.push({
+        kind: 'sort', items: its, sorted,
+        title: '请将以下四个事件按发生时间先后排序（从早到晚，逐个点击）：',
+        explain: () => sorted.map((s,idx)=>`${idx+1}. ${s.name}（${fmtY(s.start)}）`).join('<br>'),
+      });
+    } else if (type === 'coexist') {
+      const its = pickItems(2, it => it.type === 'person');
+      if (its.length < 2) continue;
+      const [x, y] = its;
+      const xMid=(x.start+x.end)/2, yMid=(y.start+y.end)/2;
+      const coexist = x.start <= y.end && y.start <= x.end && Math.abs(xMid-yMid) < 150;
+      const opts = shuffle([['是同时代的人', true], ['不是同时代的人', false]]);
+      questions.push({
+        kind: 'choice', items: [x, y],
+        title: `<b>${x.name}</b>（${fmtY(x.start)}）与 <b>${y.name}</b>（${fmtY(y.start)}）是同时代人吗？`,
+        opts: opts.map(o=>o[0]), answers: opts.map(o=>o[1]), correctIdx: opts.findIndex(o=>o[1]===coexist),
+        explain: () => `${x.name}活跃于${fmtY(x.start)}前后，${y.name}活跃于${fmtY(y.start)}前后，${coexist ? '两者生活年代确实重叠' : '两者相差较远'}。可在对比视图中查看详情。`,
+      });
+    } else {
+      const target = pickItems(1, it => it.type === 'event' && it.factions.length)[0];
+      const decoys = pickItems(3, it => it !== target && it.type === 'event' && !it.factions.includes(target.factions[0]));
+      if (!target || decoys.length < 3) continue;
+      const opts = shuffle([target, ...decoys]);
+      const civName = CIVILIZATIONS.find(c=>c.id===target.factions[0]).name;
+      questions.push({
+        kind: 'choice', items: [target],
+        title: `以下哪个事件属于<b>${civName}</b>、且发生在<b>${fmtY(target.start)}</b>前后？`,
+        opts: opts.map(o=>o.name), correctIdx: opts.indexOf(target),
+        explain: () => `${target.name}（${fmtY(target.start)}）——${target.detail.slice(0, 80)}…`,
+      });
+    }
+  }
+  quiz = { questions, idx: 0, correct: 0, wrongList: [], locked: false };
+  renderQuestion();
+}
+
+function renderQuestion() {
+  const q = quiz.questions[quiz.idx];
+  if (!q) { renderQuizResult(); return; }
+  const card = document.getElementById('quizCard');
+  let optsHtml = '';
+  if (q.kind === 'sort') {
+    optsHtml = `<div class="quiz-opts" id="sortPool">${q.items.map((it,i)=>
+      `<div class="quiz-opt" data-i="${i}"><span class="oi">${'甲乙丙丁'[i]}</span>${it.name}</div>`).join('')}</div>
+      <div style="margin-top:10px;font-size:12.5px;color:var(--text2)">你排的顺序：<span id="sortPicked" style="color:var(--text)">（尚未选择）</span></div>`;
+  } else {
+    optsHtml = `<div class="quiz-opts">${q.opts.map((o,i)=>
+      `<div class="quiz-opt" data-i="${i}" onclick="answerChoice(${i})"><span class="oi">${'ABCD'[i]}</span>${o}</div>`).join('')}</div>`;
+  }
+  card.innerHTML = `
+    <div class="ov-head">
+      <h2>历史时间测验</h2>
+      <button class="ov-close" onclick="closeOverlay('quizOverlay')">✕</button>
+    </div>
+    <div class="quiz-q"><span class="qnum">第 ${quiz.idx+1} 题 / 共 ${quiz.questions.length} 题</span>${q.title}</div>
+    ${optsHtml}
+    <div id="quizExp"></div>
+    <div class="quiz-foot">
+      <span class="quiz-score">正确 <b>${quiz.correct}</b> / ${quiz.idx}</span>
+      <button class="btn-main" id="quizNext" style="visibility:hidden" onclick="nextQuestion()">下一题 →</button>
+    </div>`;
+  if (q.kind === 'sort') setupSortQuestion();
+}
+
+let sortPicks = [];
+function setupSortQuestion() {
+  const q = quiz.questions[quiz.idx];
+  sortPicks = [];
+  document.querySelectorAll('#sortPool .quiz-opt').forEach(el => {
+    el.onclick = () => {
+      if (el.classList.contains('disabled')) return;
+      const i = +el.dataset.i;
+      if (sortPicks.includes(i)) return;
+      sortPicks.push(i);
+      el.classList.add('disabled');
+      el.querySelector('.oi').textContent = sortPicks.length;
+      document.getElementById('sortPicked').textContent = sortPicks.map(p=>q.items[p].name).join(' → ');
+      if (sortPicks.length === q.items.length) judgeSort();
+    };
+  });
+}
+function judgeSort() {
+  const q = quiz.questions[quiz.idx];
+  const correctOrder = q.sorted.map(s => q.items.indexOf(s));
+  const isCorrect = sortPicks.join(',') === correctOrder.join(',');
+  if (isCorrect) quiz.correct++; else quiz.wrongList.push(q);
+  document.querySelectorAll('#sortPool .quiz-opt').forEach(el => el.classList.add('disabled'));
+  document.getElementById('sortPicked').innerHTML = isCorrect
+    ? '<span style="color:#2e8b57">✓ 正确！</span>' + sortPicks.map(p=>q.items[p].name).join(' → ')
+    : `<span style="color:var(--accent2)">✗ 正确顺序：</span>${correctOrder.map(i=>q.items[i].name).join(' → ')}`;
+  document.getElementById('quizExp').innerHTML = `<div class="quiz-exp">${q.explain()}</div>`;
+  const btn = document.getElementById('quizNext');
+  btn.style.visibility = 'visible';
+  btn.textContent = quiz.idx + 1 >= quiz.questions.length ? '看结果 →' : '下一题 →';
+}
+function answerChoice(i) {
+  if (quiz.locked) return;
+  const q = quiz.questions[quiz.idx];
+  quiz.locked = true;
+  const els = document.querySelectorAll('.quiz-opts .quiz-opt');
+  els.forEach((el, idx) => {
+    el.classList.add('disabled');
+    if (idx === q.correctIdx) el.classList.add('correct');
+    else if (idx === i) el.classList.add('wrong');
+  });
+  const isCorrect = i === q.correctIdx;
+  if (isCorrect) quiz.correct++; else quiz.wrongList.push(q);
+  document.getElementById('quizExp').innerHTML = `<div class="quiz-exp">${isCorrect ? '✓ 回答正确。' : '✗ 正确答案是 ' + 'ABCD'[q.correctIdx] + '。'}${q.explain()}</div>`;
+  const btn = document.getElementById('quizNext');
+  btn.style.visibility = 'visible';
+  btn.textContent = quiz.idx + 1 >= quiz.questions.length ? '看结果 →' : '下一题 →';
+  setTimeout(() => { quiz.locked = false; }, 100);
+}
+function nextQuestion() { quiz.idx++; renderQuestion(); }
+function renderQuizResult() {
+  const n = quiz.questions.length, c = quiz.correct;
+  const grade = c === n ? '优秀' : c >= n*0.7 ? '良好' : c >= n*0.4 ? '继续努力' : '建议先浏览时间轴';
+  const comment = c === n ? '全部正确，对历史时间脉络掌握扎实。'
+    : c >= n*0.7 ? '成绩良好。可对照时间轴复习答错的题目，加深印象。'
+    : c >= n*0.4 ? '已具备基础。建议重点浏览轴心时代与帝国时代两个时段。'
+    : '建议先浏览时间轴各时代，熟悉对照关系后再作答。';
+  const wrongHtml = quiz.wrongList.length ? `
+    <div class="quiz-wrong-list">
+      <div style="font-size:12px;color:var(--accent);letter-spacing:2px;margin-bottom:8px">错题回顾</div>
+      ${quiz.wrongList.map(q=>`<div class="wl"><b>${q.title.replace(/<[^>]+>/g,'')}</b><br>${q.explain()}</div>`).join('')}
+    </div>` : '';
+  document.getElementById('quizCard').innerHTML = `
+    <div class="ov-head">
+      <h2>测验结果</h2>
+      <button class="ov-close" onclick="closeOverlay('quizOverlay')">✕</button>
+    </div>
+    <div class="quiz-result">
+      <div class="big" style="font-size:34px;font-weight:700;color:var(--accent)">${grade}</div>
+      <h3>${c} / ${n}</h3>
+      <p>${comment}</p>
+      ${wrongHtml}
+      <div style="margin-top:20px;display:flex;gap:10px;justify-content:center">
+        <button class="btn-main" onclick="renderQuizSetup()">重新练习</button>
+        <button class="btn-ghost" onclick="closeOverlay('quizOverlay')">返回时间轴</button>
+      </div>
+    </div>`;
+}
+
+/* ============ 概念术语卡 ============ */
+const TERMS = [
+  { term: "王朝", alt: "dynasty", def: "同一家族世袭掌握政权的时期，如商朝、汉朝。判断标准是最高权力在家族内传递，而非疆域大小。" },
+  { term: "帝国", alt: "empire", def: "一个中心政权统治多个民族、广阔疆域的国家形态，通常由皇帝（emperor）统治，如罗马帝国、波斯帝国。" },
+  { term: "共和国", alt: "republic", def: "国家元首由选举或推举产生（而非世袭）的政体。罗马共和国由元老院与执政官共治，是现代共和制的源头之一。" },
+  { term: "封建", alt: "feudal", def: "中国语境（西周）指「封邦建国」——天子分封诸侯；西方语境（中世纪欧洲）指领主-封臣-采邑的契约层级。两者形似而本质不同，考试常考辨析。" },
+  { term: "轴心时代", alt: "Axial Age", def: "德国哲学家雅斯贝尔斯提出的概念：公元前800–前200年间，中国（诸子百家）、印度（佛陀）、希腊（苏格拉底）、西亚（犹太教先知）几乎同时诞生奠基性思想，人类精神根基在此奠定。" },
+  { term: "大一统", alt: "", def: "中国政治传统中「天下定于一」的理想与制度实践：中央集权、郡县制、书同文。自秦确立后成为中华文明的主旋律，与欧洲「分而不合」形成对照。" },
+  { term: "丝绸之路", alt: "Silk Road", def: "连接中国与地中海的陆上贸易网络（并非一条路），丝绸、纸张、香料、宗教、技术沿路双向流动。德国地理学家李希霍芬1877年命名。" },
+  { term: "文艺复兴", alt: "Renaissance", def: "14–16世纪发端于意大利的思想文化运动，借助复兴古希腊罗马文化倡导人文主义。Renaissance 本义「再生」。" },
+  { term: "宗教改革", alt: "Reformation", def: "1517年路德发起，挑战罗马教廷权威，新教诞生。引发百年宗教战争，也促成政教分离与民族国家。" },
+  { term: "工业革命", alt: "Industrial Revolution", def: "18世纪60年代起始于英国的机器生产取代手工劳动的变革：蒸汽机、工厂制、城市化。是「西方为什么领先」这一问题的核心答案之一。" },
+  { term: "青铜时代", alt: "Bronze Age", def: "以青铜器为主要生产工具的时期（中国约前2000–前500年），同时伴随城市与文字出现。其后是铁器时代。" },
+  { term: "铁器时代", alt: "Iron Age", def: "铁器普及的时期。铁器便宜且锋利，使农耕扩张、平民武装成为可能，深刻改变了战争与社会结构（如战国、亚述）。" },
+  { term: "游牧帝国", alt: "nomad empire", def: "草原民族建立的政权（匈奴、突厥、蒙古），机动性强、控制欧亚商路。中国长城、和亲、互市多为应对其而产生；蒙古帝国是人类史上最大陆地帝国。" },
+  { term: "冷兵器时代", alt: "", def: "火药武器成熟（约14世纪传入欧洲）之前的时代，战争依赖刀剑弓矛与体力阵法，骑兵长期是最强兵种。" },
+];
+function openTerm(name, anchorEl) {
+  const t = TERMS.find(x => x.term === name);
+  if (!t) return;
+  const pop = document.getElementById('termPop');
+  pop.innerHTML = `
+    <button class="term-close" onclick="closeTerm()">✕</button>
+    <h4>${t.term}${t.alt ? `<small>${t.alt}</small>` : ''}</h4>
+    ${t.def}`;
+  pop.style.display = 'block';
+  const r = anchorEl.getBoundingClientRect();
+  let left = Math.min(r.left, window.innerWidth - 390);
+  let top = r.bottom + 8;
+  if (top + 200 > window.innerHeight) top = r.top - 200 > 0 ? r.top - pop.offsetHeight - 8 : 20;
+  pop.style.left = Math.max(10, left) + 'px';
+  pop.style.top = top + 'px';
+}
+function closeTerm() { document.getElementById('termPop').style.display = 'none'; }
+/* 把文本中的术语包成可点击链接（每个术语最多替换一次，避免嵌套） */
+function linkifyTerms(text) {
+  let html = text;
+  TERMS.forEach(t => {
+    const kw = t.term;
+    const idx = html.indexOf(kw);
+    if (idx >= 0 && html.indexOf('term-link', Math.max(0, idx - 60)) < 0) {
+      html = html.slice(0, idx)
+        + `<span class="term-link" onclick="openTerm('${kw}', this)">${kw}</span>`
+        + html.slice(idx + kw.length);
+    }
+  });
+  return html;
+}
+document.addEventListener('click', e => {
+  if (!e.target.closest('.term-pop') && !e.target.closest('.term-link')) closeTerm();
+});
+
+/* ============ 课堂演示模式 ============ */
+let present = null;
+function openPresent() {
+  // 播放列表 = 当前视野内可见条目，按时间排序
+  const visible = ITEMS.filter(it => it.end >= viewStart && it.start <= viewEnd)
+    .sort((a, b) => a.start - b.start);
+  if (!visible.length) return;
+  present = { list: visible, idx: 0 };
+  document.getElementById('presentWrap').classList.add('show');
+  renderPresent();
+  if (document.documentElement.requestFullscreen) {
+    document.documentElement.requestFullscreen().catch(()=>{});
+  }
+}
+function closePresent() {
+  document.getElementById('presentWrap').classList.remove('show');
+  if (document.fullscreenElement) document.exitFullscreen().catch(()=>{});
+}
+function presentPrev() { if (present && present.idx > 0) { present.idx--; renderPresent(); } }
+function presentNext() { if (present && present.idx < present.list.length - 1) { present.idx++; renderPresent(); } }
+function renderPresent() {
+  const it = present.list[present.idx];
+  const c = CIVILIZATIONS.find(c => c.id === it.factions[0]);
+  document.getElementById('pCount').textContent = `${present.idx + 1} / ${present.list.length}`;
+  document.getElementById('pBar').style.width = ((present.idx + 1) / present.list.length * 100) + '%';
+  const sameHtml = it.same_period.length
+    ? it.same_period.map(s => `<div class="ps">· ${linkifyTerms(s)}</div>`).join('')
+    : '<div class="ps">（暂无同期标注）</div>';
+  document.getElementById('pContent').innerHTML = `
+    <div class="p-civ">
+      <span class="pill" style="background:${c.color}">${c.name}</span>
+      <span class="yr">${yearRangeStr(it)}</span>
+      <span class="yr">${it.type === 'person' ? '人物' : '事件'}</span>
+    </div>
+    <div class="p-name">${it.name}</div>
+    <div class="p-detail">${linkifyTerms(it.detail)}</div>
+    <div class="p-same">
+      <div class="lbl">同 一 时 期 · 世 界 其 他 文 明</div>
+      ${sameHtml}
+    </div>`;
+}
+document.addEventListener('keydown', e => {
+  const pw = document.getElementById('presentWrap');
+  if (!pw.classList.contains('show')) return;
+  if (e.key === 'ArrowRight' || e.key === ' ' || e.key === 'PageDown') { e.preventDefault(); presentNext(); }
+  else if (e.key === 'ArrowLeft' || e.key === 'PageUp') { e.preventDefault(); presentPrev(); }
+  else if (e.key === 'Escape') closePresent();
+});
+
+/* ============ P3-1 教师标注（localStorage 持久化） ============ */
+const ANNO_KEY = 'history-timeline-annotations';
+function loadAnnos() {
+  try { return JSON.parse(localStorage.getItem(ANNO_KEY) || '{}'); } catch { return {}; }
+}
+function saveAnnos(a) { localStorage.setItem(ANNO_KEY, JSON.stringify(a)); }
+let annos = loadAnnos();
+
+function renderAnnoSection(it) {
+  const list = annos[it.name] || [];
+  const itemsHtml = list.map((t, i) =>
+    `<div class="anno-item"><div class="anno-meta">批注 ${i+1}</div>${escapeHtml(t)}</div>`).join('');
+  return `
+    <div class="anno-section">
+      <div class="section-title" style="display:flex;justify-content:space-between;align-items:center">
+        <span>教师批注（本机保存）</span>
+        <span>
+          <button class="btn-mini" onclick="startAnnoEdit('${it.name.replace(/'/g,"\\'")}')">＋ 新增</button>
+          ${list.length ? `<button class="btn-mini danger" onclick="deleteAnno('${it.name.replace(/'/g,"\\'")}')">删除</button>` : ''}
+        </span>
+      </div>
+      <div class="anno-editor" id="annoEditor"></div>
+      ${itemsHtml || '<div style="color:#999;font-size:12.5px">暂无批注。可记录考点、讲法、易错点。</div>'}
+    </div>`;
+}
+function escapeHtml(s) { return s.replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;'); }
+function startAnnoEdit(name) {
+  const editor = document.getElementById('annoEditor');
+  if (editor.dataset.editing === name) return;
+  editor.dataset.editing = name;
+  editor.innerHTML = `
+    <textarea id="annoText" placeholder="例如：考点——郡县制与分封制的对比；讲法——先用对比视图展示…"></textarea>
+    <button class="btn-mini" style="background:var(--accent);color:#fff;border:none;padding:5px 14px" onclick="saveAnno('${name.replace(/'/g,"\\'")}')">保存</button>
+    <button class="btn-mini" onclick="cancelAnnoEdit()">取消</button>`;
+  document.getElementById('annoText').focus();
+}
+function cancelAnnoEdit() {
+  const editor = document.getElementById('annoEditor');
+  editor.dataset.editing = '';
+  editor.innerHTML = '';
+}
+function saveAnno(name) {
+  const text = document.getElementById('annoText').value.trim();
+  if (!text) return;
+  (annos[name] = annos[name] || []).push(text);
+  saveAnnos(annos);
+  cancelAnnoEdit();
+  if (focusItem && focusItem.name === name) selectItem(focusItem);
+}
+function deleteAnno(name) {
+  const list = annos[name] || [];
+  if (!list.length) return;
+  list.pop();
+  if (!list.length) delete annos[name];
+  saveAnnos(annos);
+  if (focusItem && focusItem.name === name) selectItem(focusItem);
+}
+
+/* ============ P3-2 分享链接（URL hash 编码视图+选中） ============ */
+function buildHash() {
+  const p = [Math.round(viewStart), Math.round(viewEnd)];
+  if (focusItem) p.push(encodeURIComponent(focusItem.name));
+  return '#v=' + p.join(',');
+}
+function refreshHash() {
+  try { history.replaceState(null, '', buildHash()); } catch {}
+}
+function applyHash() {
+  const m = location.hash.match(/#v=(-?\d+),(-?\d+)(?:,(.+))?/);
+  if (!m) return false;
+  const s = +m[1], e = +m[2];
+  if (isFinite(s) && isFinite(e) && e > s) { viewStart = s; viewEnd = e; clampView(); }
+  if (m[3]) {
+    const name = decodeURIComponent(m[3]);
+    const it = ITEM_INDEX[name];
+    if (it) { selectItem(it); const pad = Math.max((it.end-it.start)*1.5, 120); zoomTo(it.start - pad*0.3, it.end + pad*0.7); }
+  }
+  draw();
+  return true;
+}
+let hashTimer = null;
+function scheduleHash() { clearTimeout(hashTimer); hashTimer = setTimeout(refreshHash, 400); }
+/* 平移/缩放时同步 hash */
+const _origDraw = draw;
+draw = function() { _origDraw(); scheduleHash(); };
+
+function copyShareLink() {
+  refreshHash();
+  const url = location.href;
+  const done = () => toast('链接已复制，粘贴即可打开同一视图');
+  if (navigator.clipboard && navigator.clipboard.writeText) {
+    navigator.clipboard.writeText(url).then(done).catch(() => fallbackCopy(url, done));
+  } else fallbackCopy(url, done);
+}
+function fallbackCopy(text, cb) {
+  const ta = document.createElement('textarea');
+  ta.value = text; document.body.appendChild(ta); ta.select();
+  try { document.execCommand('copy'); cb(); } catch {}
+  document.body.removeChild(ta);
+}
+function toast(msg) {
+  const t = document.getElementById('shareToast');
+  t.textContent = msg; t.style.display = 'block';
+  clearTimeout(t._timer);
+  t._timer = setTimeout(() => { t.style.display = 'none'; }, 2200);
+}
+
+/* ============ P3-3 讲义导出（打印/PDF） ============ */
+function exportHandout() {
+  const items = ITEMS.filter(it => it.end >= viewStart && it.start <= viewEnd)
+    .sort((a, b) => a.start - b.start);
+  if (!items.length) { toast('当前视野内没有条目'); return; }
+  const eraNames = ERAS.filter(e => e.range[0] <= viewEnd && e.range[1] >= viewStart).map(e => e.name).join(' / ');
+  const rows = items.map(it => {
+    const civ = CIVILIZATIONS.find(c => c.id === it.factions[0]);
+    const same = it.same_period.map(s => s.replace(/<[^>]+>/g,'')).join('；');
+    const anno = (annos[it.name] || []).join(' ／ ');
+    return `<tr>
+      <td class="t">${fmtY(it.start)}${it.end !== it.start ? '–' + fmtY(it.end).replace('公元','').replace('公元前','前') : ''}</td>
+      <td class="c">${civ.name}</td>
+      <td><b>${it.name}</b>（${it.type === 'person' ? '人物' : '事件'}）<br>${it.detail}
+        ${same ? `<br><i>同期世界：${same}</i>` : ''}
+        ${anno ? `<br><span style="color:#2e8b57">批注：${anno}</span>` : ''}
+      </td>
+    </tr>`;
+  }).join('');
+  document.getElementById('handout').innerHTML = `
+    <h1>中外历史对照 · 一页纸讲义</h1>
+    <div class="ho-sub">生成时间：${new Date().toLocaleString('zh-CN')}</div>
+    <div class="ho-range">时间范围：${fmtY(viewStart)} — ${fmtY(viewEnd)}　|　时代：${eraNames}</div>
+    <table>
+      <tr><th style="width:90px">时间</th><th style="width:70px">文明</th><th>内容</th></tr>
+      ${rows}
+    </table>
+    <div class="ho-note">本讲义由「中外历史对照图谱」生成 · 批注为本机保存内容 · 可直接打印或另存为 PDF</div>`;
+  toast('讲义已生成，正在打开打印对话框，可另存为 PDF');
+  setTimeout(() => window.print(), 350);
+}
+
+/* ============ 初始化 ============ */
+buildLayout();
+if (!applyHash()) resetView();
+</script>
+</body>
+</html>

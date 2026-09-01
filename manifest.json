@@ -1,0 +1,11 @@
+{
+  "name": "中外历史对照图谱",
+  "short_name": "历史对照图谱",
+  "description": "多文明时间轴呈现中外历史对照，适用于历史学习与课堂教学",
+  "lang": "zh-CN",
+  "start_url": "./",
+  "display": "standalone",
+  "background_color": "#f6f4ef",
+  "theme_color": "#f6f4ef",
+  "icons": []
+}
