@@ -64,6 +64,7 @@
     background: var(--bg);
     color: var(--text);
     height: 100vh;
+    height: 100dvh;
     display: flex;
     flex-direction: column;
     overflow: hidden;
@@ -380,6 +381,88 @@
     position: absolute; top: 10px; left: 12px; font-size: 11.5px; color: #9a9484; z-index: 5;
     background: rgba(255,255,255,.7); padding: 3px 8px; border-radius: 6px;
   }
+
+  /* ===== 移动端适配 ===== */
+  /* 断点策略：竖屏按宽度（≤820px），横屏按高度（≤500px，手机横屏高度约 320–420px）。
+     两条条件合并为"移动端公共规则"；各自专属规则放在后面的单独块中。 */
+  .side-toggle { display: none; }
+
+  /* ---- 移动端公共：顶栏压缩 + 弹层全屏 ---- */
+  @media ((max-width: 820px) and (orientation: portrait)), ((max-height: 500px) and (orientation: landscape)) {
+    header { flex-wrap: wrap; gap: 8px; padding: 8px 12px; row-gap: 8px; }
+    header h1 { font-size: 15px; letter-spacing: 1px; flex-shrink: 0; }
+    .search-box { flex: 1 1 160px; order: 5; }
+    .search-box input { padding: 9px 12px; font-size: 15px; } /* ≥15px 避免 iOS 聚焦自动放大 */
+    .mode-btns { flex-shrink: 0; }
+    .mode-btns button { padding: 5px 10px; font-size: 12px; }
+    .eras { order: 6; flex: 1 1 100%; justify-content: flex-start; overflow-x: auto; flex-wrap: nowrap; padding-bottom: 2px; -webkit-overflow-scrolling: touch; }
+    .eras::-webkit-scrollbar { display: none; }
+    .eras button { flex-shrink: 0; }
+    .legend { order: 7; overflow-x: auto; flex-wrap: nowrap; padding: 5px 12px; -webkit-overflow-scrolling: touch; }
+    .legend::-webkit-scrollbar { display: none; }
+    .legend .lg { flex-shrink: 0; }
+
+    .hint { font-size: 10.5px; top: 6px; left: 8px; }
+    .zoombar button, .navbtns button { padding: 8px 12px; font-size: 12.5px; touch-action: manipulation; }
+
+    /* 弹层在手机上占满屏幕 */
+    .overlay { padding: 0; }
+    .ov-card { width: 100vw; height: 100dvh; max-height: none; border-radius: 0; padding: 18px 16px 28px; }
+    .term-pop { left: 10px !important; right: 10px; max-width: none; top: auto !important; bottom: 12px; }
+
+    /* 对比视图：手机上单列堆叠 */
+    .cmp-grid { grid-template-columns: 1fr; }
+    .quiz-setup .qtype { width: 100%; }
+    .p-nav button { padding: 14px 20px; font-size: 14px; }
+    .p-nav .p-hint { display: none; } /* 手机无键盘，隐藏键盘提示 */
+  }
+
+  /* ---- 手机竖屏专属：底部抽屉详情栏 ---- */
+  @media (max-width: 820px) and (orientation: portrait) {
+    .main { flex-direction: column; }
+    .chart-area { flex: 1; min-height: 0; }
+    .side {
+      order: 2; width: 100%; height: 42dvh; border-left: none;
+      border-top: 1px solid var(--border); padding: 0 16px 20px;
+      border-radius: 16px 16px 0 0; box-shadow: 0 -6px 18px rgba(0,0,0,.08);
+      transition: height .25s ease; position: relative;
+    }
+    .side.collapsed { height: 46px; overflow: hidden; }
+    .side.collapsed .side-toggle .arr { transform: rotate(180deg); }
+    .side-toggle {
+      display: flex; align-items: center; justify-content: center;
+      width: 100%; height: 44px; flex-shrink: 0;
+      border: none; background: transparent; color: var(--text2); cursor: pointer;
+      touch-action: manipulation;
+    }
+    .side-toggle .grip { width: 36px; height: 4px; border-radius: 2px; background: #d8d2c4; }
+    .side-toggle .arr { margin-left: 10px; font-size: 11px; transition: transform .25s; }
+
+    .zoombar {
+      bottom: 12px; gap: 6px; left: 12px; right: 96px; transform: none;
+      overflow-x: auto; -webkit-overflow-scrolling: touch; scrollbar-width: none;
+    }
+    .zoombar::-webkit-scrollbar { display: none; }
+    .zoombar button { flex-shrink: 0; white-space: nowrap; }
+    .navbtns { bottom: 12px; right: 10px; }
+  }
+
+  /* ---- 手机/矮窗口横屏专属：桌面式左右布局，时间轴更好用 ---- */
+  @media (max-height: 500px) and (orientation: landscape) {
+    .main { flex-direction: row; }
+    .side {
+      width: 300px; height: auto; border-top: none; border-left: 1px solid var(--border);
+      border-radius: 0; box-shadow: none; padding: 14px;
+    }
+    .side.collapsed { height: auto; width: 300px; }
+    .side-toggle { display: none; }
+    header { flex-wrap: nowrap; align-items: center; padding: 6px 12px; }
+    .search-box { order: 0; min-width: 140px; }
+    .eras { order: 0; flex: 0 1 auto; min-width: 0; max-width: 240px; overflow-x: auto; }
+    .legend { display: none; } /* 横屏高度有限，图例（开关功能）收起，泳道颜色仍可区分 */
+    .zoombar { bottom: 10px; }
+    .navbtns { bottom: 10px; right: 10px; }
+  }
 </style>
 </head>
 <body>
@@ -441,7 +524,18 @@
 <div class="main" role="main">
   <div class="chart-area" id="chartArea">
     <canvas id="chart"></canvas>
-    <div class="hint">拖动平移 · 滚轮缩放 · 点击条目查看同期世界</div>
+    <div class="hint" id="hintBar">拖动平移 · 滚轮/双指缩放 · 点击条目查看同期世界</div>
+    <script>
+      // 移动端：首次触摸时间轴后隐藏操作提示，避免遮挡泳道标题
+      (function() {
+        var bar = document.getElementById('hintBar');
+        if (!bar) return;
+        if (window.matchMedia('(max-width: 820px) and (orientation: portrait)').matches) {
+          bar.addEventListener('touchstart', function() { bar.style.display = 'none'; }, { once: true, passive: true });
+          setTimeout(function() { bar.style.display = 'none'; }, 6000);
+        }
+      })();
+    </script>
     <div class="tooltip" id="tooltip"></div>
     <div class="zoombar">
       <button onclick="zoomTo(-3500, 500)">上古全景</button>
@@ -457,9 +551,12 @@
     </div>
   </div>
   <div class="side" id="sidePanel">
+    <button class="side-toggle" id="sideToggle" onclick="toggleSide()" aria-label="收起或展开详情栏">
+      <span class="grip"></span><span class="arr">▼</span>
+    </button>
     <div class="empty">
       点击时间轴上的任意条目<br><br>
-      右侧将显示该条目的详细内容，以及同一时期世界其他文明的动向。
+      下方将显示该条目的详细内容，以及同一时期世界其他文明的动向。
     </div>
   </div>
 </div>
@@ -716,7 +813,7 @@ canvas.addEventListener('mousemove', e => {
   if (it) {
     tooltip.style.display = 'block';
     tooltip.innerHTML = `<b>${it.name}</b><div class="t-meta">${typeLabel(it)} · ${yearRangeStr(it)} · ${it.factions.map(f=>CIVILIZATIONS.find(c=>c.id===f).name).join('、')}</div>点击查看同期世界 →`;
-    tooltip.style.left = Math.min(mx + 14, W - 290) + 'px';
+    tooltip.style.left = Math.min(Math.max(mx + 14, 8), Math.max(W - 290, 8)) + 'px';
     tooltip.style.top = (my + 14) + 'px';
     canvas.style.cursor = 'pointer';
   } else {
@@ -832,8 +929,15 @@ function resetView() { zoomTo(-3500, 2200); }
 
 /* ============ 侧栏 ============ */
 const sidePanel = document.getElementById('sidePanel');
+// 手机竖屏时抽屉默认收起，把时间轴空间留给主视图（横屏矮窗口保持桌面式布局）
+if (window.innerWidth <= 820 && window.matchMedia('(orientation: portrait)').matches) sidePanel.classList.add('collapsed');
+function toggleSide() { sidePanel.classList.toggle('collapsed'); }
 function selectItem(it) {
   focusItem = it;
+  // 手机竖屏上如果抽屉处于收起状态，选中条目时自动展开
+  if (window.innerWidth <= 820 && window.matchMedia('(orientation: portrait)').matches && sidePanel.classList.contains('collapsed')) {
+    sidePanel.classList.remove('collapsed');
+  }
   draw();
   const civs = it.factions.map(f => {
     const c = CIVILIZATIONS.find(c=>c.id===f);
@@ -850,7 +954,7 @@ function selectItem(it) {
   // 同期其他文明的条目（自动计算）
   const auto = computeAutoSame(it);
 
-  sidePanel.innerHTML = `
+  sidePanel.innerHTML = sideToggleHTML + `
     <h2>${it.type === 'person' ? '人物 · ' : ''}${it.name}</h2>
     <div class="sub">${civs}<span>·</span><span>${yearRangeStr(it)}</span><span>·</span><span>${typeLabel(it)}</span></div>
     <div class="detail">${it.detail}</div>
@@ -874,12 +978,12 @@ function computeAutoSame(it) {
   });
   return out.sort((a,b)=>b.start-a.start).slice(0, 24);
 }
+const sideToggleHTML = '<button class="side-toggle" id="sideToggle" onclick="toggleSide()" aria-label="收起或展开详情栏"><span class="grip"></span><span class="arr">▼</span></button>';
 function clearFocus() {
   focusItem = null;
-  sidePanel.innerHTML = '<div class="empty">点击时间轴上的条目，可查看详情与同期世界对照。</div>';
+  sidePanel.innerHTML = sideToggleHTML + '<div class="empty">点击时间轴上的条目，可查看详情与同期世界对照。</div>';
   draw();
-}
-function selectByName(name) {
+}function selectByName(name) {
   const it = ITEM_INDEX[name];
   if (it) selectItem(it);
 }
