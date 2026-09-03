@@ -1,0 +1,6 @@
+name = "history-timeline"
+compatibility_date = "2026-09-01"
+
+# 纯静态站点：整个目录作为 Workers 静态资产发布
+[assets]
+directory = "./"
