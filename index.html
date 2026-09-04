@@ -8,9 +8,10 @@
 <meta name="keywords" content="历史时间轴,中外历史对照,历史图谱,中国史,世界史,历史教学,历史事件查询,历史人物,同步对照,课堂演示">
 <meta name="author" content="中外历史对照图谱">
 <meta name="robots" content="index,follow">
-<link rel="canonical" href="https://history-timeline.panxianwen2015.workers.dev/">
+<link rel="canonical" href="https://histline.chromvel.com/">
 <!-- Open Graph -->
 <meta property="og:type" content="website">
+<meta property="og:url" content="https://histline.chromvel.com/">
 <meta property="og:title" content="中外历史对照图谱 | 时间轴上的中国史与世界史">
 <meta property="og:description" content="多文明时间轴检索历史事件与人物，同一时期中国发生了什么、世界发生了什么，一目了然。适用于历史学习与课堂教学。">
 <meta property="og:site_name" content="中外历史对照图谱">
@@ -201,6 +202,14 @@
   .fb-email { font-size: 13.5px; color: var(--text); user-select: all; }
   .fb-copied { font-size: 12px; color: #2e7d32; opacity: 0; transition: opacity .2s; }
   .fb-copied.show { opacity: 1; }
+  .fb-webmail {
+    display: none; align-items: center; flex-wrap: wrap; gap: 6px 10px;
+    background: #fff8e6; border: 1px solid #ecd9a0; border-radius: 9px;
+    padding: 9px 12px; margin-bottom: 14px; font-size: 12.5px; color: var(--text2);
+  }
+  .fb-webmail.show { display: flex; }
+  .fb-webmail a { color: var(--accent2); font-weight: 600; text-decoration: none; white-space: nowrap; }
+  .fb-webmail a:hover { text-decoration: underline; }
   .fb-tips p { font-size: 12px; color: #9a9484; line-height: 1.9; margin: 2px 0; }
 
   /* 对比视图 */
@@ -540,12 +549,18 @@
     <div class="fb-body">
       <p class="fb-lead">发现内容错误、有改进建议，或想在教学中使用本图谱遇到问题，欢迎随时联系。</p>
       <div class="fb-actions">
-        <a class="fb-mail-btn" id="fbMailLink" href="#">✉ 直接发邮件</a>
+        <a class="fb-mail-btn" id="fbMailLink" href="#" onclick="sendFbMail(event)">✉ 发邮件给我</a>
         <button class="fb-copy-btn" onclick="copyFbEmail()">复制邮箱地址</button>
       </div>
       <div class="fb-email-row">
         <span class="fb-email" id="fbEmailText">feedback@chromvel.com</span>
         <span class="fb-copied" id="fbCopied">已复制 ✓</span>
+      </div>
+      <div class="fb-webmail" id="fbMailTip">
+        <span>已复制邮箱。若邮件应用未打开，可用网页版邮箱写信：</span>
+        <a href="https://mail.qq.com/" target="_blank" rel="noopener">QQ邮箱</a>
+        <a href="https://outlook.live.com/mail/0/deeplink/compose" target="_blank" rel="noopener">Outlook</a>
+        <a href="https://mail.google.com/mail/?view=cm" target="_blank" rel="noopener">Gmail</a>
       </div>
       <div class="fb-tips">
         <p>· 反馈内容纠错时，请尽量注明具体条目名称和年份</p>
@@ -1154,16 +1169,39 @@ document.querySelectorAll('.overlay').forEach(ov => {
 
 /* ============ 反馈与联系 ============ */
 const FB_EMAIL = 'feedback@chromvel.com';
+// 访客设备不一定配置了邮件客户端，纯 mailto 链接点了会"没反应"。
+// 策略：先复制邮箱到剪贴板，再尝试唤起邮件客户端；无论结果如何都有可用的后续路径。
 function fbMailto() {
   const subj = encodeURIComponent('【中外历史对照图谱】反馈');
   return `mailto:${FB_EMAIL}?subject=${subj}`;
 }
 function openFeedback() {
-  document.getElementById('fbMailLink').href = fbMailto();
+  const link = document.getElementById('fbMailLink');
+  link.href = fbMailto();
   document.getElementById('fbOverlay').classList.add('show');
 }
-function copyFbEmail() {
+// 点击"发邮件"按钮：复制邮箱（保证拿到地址）+ 尝试唤起本地邮件应用 + 提示兜底方案
+function sendFbMail(event) {
+  event.preventDefault();
+  copyFbEmail(true);
+  const ua = navigator.userAgent || '';
+  const isMobile = /Android|iPhone|iPad|Mobile/i.test(ua);
+  // 手机上系统会自己弹出"选择邮件应用"，体验较好，直接走 mailto
+  if (isMobile) {
+    window.location.href = fbMailto();
+    return;
+  }
+  // 桌面端：尝试唤起邮件客户端，并提示"没反应就打开网页版邮箱"
+  const win = window.open(fbMailto(), '_blank');
+  const tip = document.getElementById('fbMailTip');
+  // 若弹窗被拦截（多数情况），引导用户用网页版邮箱
+  setTimeout(() => {
+    tip.classList.add('show');
+  }, 300);
+}
+function copyFbEmail(silent) {
   const done = () => {
+    if (silent) return; // 发邮件流程中静默复制，不显示"已复制"提示（避免和邮件提示重叠）
     const tip = document.getElementById('fbCopied');
     tip.classList.add('show');
     setTimeout(() => tip.classList.remove('show'), 1800);
