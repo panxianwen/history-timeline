@@ -19,3 +19,4 @@ jobs:
         with:
           apiToken: ${{ secrets.CLOUDFLARE_API_TOKEN }}
           accountId: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
+          wranglerVersion: '4'  # Wrangler 3 不支持纯静态资产部署（要求 entry-point），必须用 v4
