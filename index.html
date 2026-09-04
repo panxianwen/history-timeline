@@ -176,6 +176,33 @@
   .ov-close { border: none; background: #f0ece3; width: 30px; height: 30px; border-radius: 50%; cursor: pointer; font-size: 15px; color: var(--text2); }
   .ov-close:hover { background: var(--accent2); color: #fff; }
 
+  /* 反馈弹层 */
+  .fb-card { width: min(480px, 96vw); }
+  .fb-body { padding: 0 2px 6px; }
+  .fb-lead { font-size: 13.5px; line-height: 1.9; color: var(--text2); margin-bottom: 18px; }
+  .fb-actions { display: flex; gap: 10px; flex-wrap: wrap; margin-bottom: 12px; }
+  .fb-mail-btn {
+    flex: 1; min-width: 150px; text-align: center; padding: 11px 18px;
+    background: var(--accent2); color: #fff; border-radius: 9px;
+    font-size: 14px; font-weight: 600; text-decoration: none; letter-spacing: 1px;
+  }
+  .fb-mail-btn:hover { filter: brightness(1.1); }
+  .fb-copy-btn {
+    flex: 1; min-width: 130px; padding: 11px 18px; border: 1.5px solid var(--accent);
+    background: transparent; color: var(--accent); border-radius: 9px;
+    font-size: 14px; font-weight: 600; cursor: pointer;
+  }
+  .fb-copy-btn:hover { background: var(--accent); color: #fff; }
+  .fb-email-row {
+    display: flex; align-items: center; justify-content: space-between; gap: 10px;
+    background: #faf7f0; border: 1px dashed var(--border); border-radius: 9px;
+    padding: 10px 14px; margin-bottom: 14px;
+  }
+  .fb-email { font-size: 13.5px; color: var(--text); user-select: all; }
+  .fb-copied { font-size: 12px; color: #2e7d32; opacity: 0; transition: opacity .2s; }
+  .fb-copied.show { opacity: 1; }
+  .fb-tips p { font-size: 12px; color: #9a9484; line-height: 1.9; margin: 2px 0; }
+
   /* 对比视图 */
   .cmp-selectors { display: grid; grid-template-columns: 1fr 40px 1fr; gap: 10px; align-items: center; margin-bottom: 16px; }
   .cmp-selectors select {
@@ -405,9 +432,10 @@
     .hint { font-size: 10.5px; top: 6px; left: 8px; }
     .zoombar button, .navbtns button { padding: 8px 12px; font-size: 12.5px; touch-action: manipulation; }
 
-    /* 弹层在手机上占满屏幕 */
+    /* 弹层在手机上占满屏幕（反馈弹层内容少，保持居中小卡片） */
     .overlay { padding: 0; }
     .ov-card { width: 100vw; height: 100dvh; max-height: none; border-radius: 0; padding: 18px 16px 28px; }
+    .fb-card { width: calc(100vw - 24px); height: auto; max-height: 80dvh; border-radius: 14px; padding: 20px 18px; }
     .term-pop { left: 10px !important; right: 10px; max-width: none; top: auto !important; bottom: 12px; }
 
     /* 对比视图：手机上单列堆叠 */
@@ -476,6 +504,7 @@
     <button class="ghost" onclick="openCompare()">对比</button>
     <button class="ghost" onclick="openQuiz()">测验</button>
     <button onclick="openPresent()">演示</button>
+    <button class="ghost fb-btn" onclick="openFeedback()" aria-label="反馈与联系">反馈</button>
   </div>
   <div class="eras" id="eras"></div>
 </header>
@@ -500,6 +529,30 @@
 
 <div class="overlay" id="quizOverlay">
   <div class="ov-card" id="quizCard"></div>
+</div>
+
+<div class="overlay" id="fbOverlay">
+  <div class="ov-card fb-card">
+    <div class="ov-head">
+      <h2>反馈与交流</h2>
+      <button class="ov-close" onclick="closeOverlay('fbOverlay')">✕</button>
+    </div>
+    <div class="fb-body">
+      <p class="fb-lead">发现内容错误、有改进建议，或想在教学中使用本图谱遇到问题，欢迎随时联系。</p>
+      <div class="fb-actions">
+        <a class="fb-mail-btn" id="fbMailLink" href="#">✉ 直接发邮件</a>
+        <button class="fb-copy-btn" onclick="copyFbEmail()">复制邮箱地址</button>
+      </div>
+      <div class="fb-email-row">
+        <span class="fb-email" id="fbEmailText">feedback@chromvel.com</span>
+        <span class="fb-copied" id="fbCopied">已复制 ✓</span>
+      </div>
+      <div class="fb-tips">
+        <p>· 反馈内容纠错时，请尽量注明具体条目名称和年份</p>
+        <p>· 教师用户如需批量数据、课堂讲义定制，也可来信说明</p>
+      </div>
+    </div>
+  </div>
 </div>
 
 <div class="term-pop" id="termPop"></div>
@@ -1098,6 +1151,38 @@ function closeOverlay(id) { document.getElementById(id).classList.remove('show')
 document.querySelectorAll('.overlay').forEach(ov => {
   ov.addEventListener('click', e => { if (e.target === ov) ov.classList.remove('show'); });
 });
+
+/* ============ 反馈与联系 ============ */
+const FB_EMAIL = 'feedback@chromvel.com';
+function fbMailto() {
+  const subj = encodeURIComponent('【中外历史对照图谱】反馈');
+  return `mailto:${FB_EMAIL}?subject=${subj}`;
+}
+function openFeedback() {
+  document.getElementById('fbMailLink').href = fbMailto();
+  document.getElementById('fbOverlay').classList.add('show');
+}
+function copyFbEmail() {
+  const done = () => {
+    const tip = document.getElementById('fbCopied');
+    tip.classList.add('show');
+    setTimeout(() => tip.classList.remove('show'), 1800);
+  };
+  if (navigator.clipboard && window.isSecureContext) {
+    navigator.clipboard.writeText(FB_EMAIL).then(done).catch(() => fallbackCopyFbEmail(done));
+  } else {
+    fallbackCopyFbEmail(done);
+  }
+}
+function fallbackCopyFbEmail(done) {
+  const ta = document.createElement('textarea');
+  ta.value = FB_EMAIL;
+  ta.style.cssText = 'position:fixed;opacity:0';
+  document.body.appendChild(ta);
+  ta.select();
+  try { document.execCommand('copy'); done(); } catch(e) {}
+  document.body.removeChild(ta);
+}
 
 function renderCompare() {
   const a = ITEM_INDEX[document.getElementById('cmpA').value];
